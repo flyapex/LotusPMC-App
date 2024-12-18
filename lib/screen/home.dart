@@ -5,8 +5,10 @@ import 'package:lotuspmc/screen/service_request.dart';
 import 'package:lotuspmc/service/style/color.dart';
 
 import 'concierge_request.dart';
+import 'departure_nofitication.dart';
 import 'documents.dart';
 import 'home_improvement_services.dart';
+import 'pre_arrival_notification.dart';
 import 'widget/button.dart';
 import 'widget/text.dart';
 
@@ -71,14 +73,14 @@ class HomeScreen extends StatelessWidget {
               text: 'PRE-ARRIVAL NOTIFICATION',
               color: mutedText,
               onTap: () {
-                // Get.to(() => const PropertyInformationScreen());
+                Get.to(() => const PreArrivalNotification());
               },
             ),
             ActionButton(
               text: 'DEPARTURE NOTIFICATION & REFRESH',
               color: borderColor,
               onTap: () {
-                // Get.to(() => const PropertyInformationScreen());
+                Get.to(() => const DepartureNofitication());
               },
             ),
             const SizedBox(height: 30),
