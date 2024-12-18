@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lotuspmc/screen/login.dart';
+import 'controller/db_controller.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -21,6 +24,8 @@ class MyApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
+    DBController dbController = Get.put(DBController());
+
     return GetMaterialApp(
       title: 'Lotus PMC',
       debugShowCheckedModeBanner: false,
@@ -31,7 +36,10 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
+      home: dbController.getUserToken() == null
+          ? const LoginScreen()
+          : const LoginScreen(), //HomeScreen
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/ant_design.dart';
-// ignore: depend_on_referenced_packages
-import 'package:colorful_iconify_flutter/icons/flat_color_icons.dart';
+import 'package:lotuspmc/controller/db_controller.dart';
+import 'package:lotuspmc/controller/user_controller.dart';
+import 'package:lotuspmc/model/auth_model.dart';
+import 'package:lotuspmc/screen/home.dart';
 import '../service/style/color.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -15,9 +15,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final UserController userController = Get.find();
+  DBController dbController = Get.find();
+
   bool _isPasswordVisible = false;
 
   void _togglePasswordVisibility() {
@@ -54,6 +54,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return null;
   }
 
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != userController.passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
+  Widget buildTextField({
+    required String label,
+    required TextEditingController controller,
+    required String? Function(String?) validator,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: secondary),
+        border: const OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: primary, width: 2),
+        ),
+        suffixIcon: suffixIcon,
+      ),
+      validator: validator,
+      maxLines: maxLines,
+    ).paddingSymmetric(vertical: 10);
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = Get.width;
@@ -64,6 +101,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: secondary),
+        centerTitle: true,
+        title: Text(
+          'CREATE ACCOUNT',
+          style: TextStyle(
+            fontSize: 18,
+            color: primary,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -72,16 +119,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'CREATE ACCOUNT',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: primary,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-                const SizedBox(height: 20),
+                // Text(
+                //   'CREATE ACCOUNT',
+                //   style: TextStyle(
+                //     fontSize: 18,
+                //     color: primary,
+                //     fontWeight: FontWeight.bold,
+                //     letterSpacing: 2,
+                //   ),
+                // ),
+                // const SizedBox(height: 20),
                 Image.asset(
                   'assets/images/logo.png',
                   height: 100,
@@ -103,66 +150,112 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     letterSpacing: 1,
                   ),
                 ),
-                const SizedBox(height: 30),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'YOUR NAME',
-                    labelStyle: TextStyle(color: secondary),
-                    border: const OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: primary, width: 2),
-                    ),
-                    hintText: 'Enter your name',
-                    hintStyle: TextStyle(color: secondary),
-                  ),
+                const SizedBox(height: 10),
+                buildTextField(
+                  label: 'YOUR FIRST NAME',
+                  controller: userController.firstNameController,
                   validator: _validateName,
+                  keyboardType: TextInputType.name,
                 ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'EMAIL',
-                    labelStyle: TextStyle(color: secondary),
-                    border: const OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: primary, width: 2),
-                    ),
-                    hintText: 'Enter your email',
-                    hintStyle: TextStyle(color: secondary),
-                  ),
+                buildTextField(
+                  label: 'YOUR LAST NAME',
+                  controller: userController.lastNameController,
+                  validator: _validateName,
+                  keyboardType: TextInputType.name,
+                ),
+                buildTextField(
+                  label: 'EMAIL',
+                  controller: userController.emailController,
                   validator: _validateEmail,
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
+                buildTextField(
+                  label: 'ADDRESS',
+                  controller: userController.addressController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your address';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.streetAddress,
+                ),
+                buildTextField(
+                  label: 'CITY',
+                  controller: userController.cityController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your city';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.streetAddress,
+                ),
+                buildTextField(
+                  label: 'PHONE NUMBER',
+                  controller: userController.phoneNumberController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your phone number';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.phone,
+                ),
+                buildTextField(
+                  label: 'PASSWORD',
+                  controller: userController.passwordController,
                   obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'PASSWORD',
-                    labelStyle: TextStyle(color: secondary),
-                    border: const OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: primary, width: 2),
-                    ),
-                    hintText: 'Enter your password',
-                    hintStyle: TextStyle(color: secondary),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
-                        color: primary,
-                      ),
-                      onPressed: _togglePasswordVisibility,
-                    ),
-                  ),
                   validator: _validatePassword,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: primary,
+                    ),
+                    onPressed: _togglePasswordVisibility,
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
                 ),
-                const SizedBox(height: 30),
+                buildTextField(
+                  label: 'CONFIRM PASSWORD',
+                  controller: userController.confirmPasswordController,
+                  obscureText: !_isPasswordVisible,
+                  validator: _validateConfirmPassword,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: primary,
+                    ),
+                    onPressed: _togglePasswordVisibility,
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+                buildTextField(
+                  label: 'NOTE',
+                  controller: userController.noteController,
+                  validator: (value) {
+                    if (value != null && value.length > 200) {
+                      return 'Note cannot exceed 200 characters';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4,
+                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      // Perform sign-up logic
+                      LoginResponseModel? response =
+                          await userController.manualRegister();
+                      if (response != null) {
+                        dbController.saveUserToken(response.data.token);
+                        Get.to(() => const HomeScreen());
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -178,61 +271,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Google Sign-In
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.grey),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    minimumSize: Size(screenWidth, 50),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Iconify(
-                        FlatColorIcons.google,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Sign up with Google',
-                        style: TextStyle(color: secondary, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Apple Sign-In
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.grey),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    minimumSize: Size(screenWidth, 50),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Iconify(
-                        AntDesign.apple_filled,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Sign up with Apple',
-                        style: TextStyle(color: secondary, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ).paddingSymmetric(horizontal: 24),
           ),

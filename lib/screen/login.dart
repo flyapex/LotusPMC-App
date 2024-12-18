@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/ant_design.dart';
-// ignore: depend_on_referenced_packages
-import 'package:colorful_iconify_flutter/icons/flat_color_icons.dart';
+import 'package:lotuspmc/controller/db_controller.dart';
+import 'package:lotuspmc/controller/user_controller.dart';
+import 'package:lotuspmc/model/auth_model.dart';
 import 'package:lotuspmc/screen/home.dart';
 import '../service/style/color.dart';
 import 'signup.dart';
@@ -17,8 +16,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  UserController userController = Get.put(UserController());
+  DBController dbController = Get.find();
+
   bool _isPasswordVisible = false;
 
   void _togglePasswordVisibility() {
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
-                  controller: _emailController,
+                  controller: userController.emailController,
                   decoration: InputDecoration(
                     labelText: 'EMAIL',
                     labelStyle: TextStyle(color: secondary),
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                  controller: _passwordController,
+                  controller: userController.passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'PASSWORD',
@@ -146,9 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {
-                      // Add forgot password logic here
-                    },
+                    onPressed: () {},
                     child: Text(
                       'Forgot Password?',
                       style: TextStyle(color: secondary),
@@ -157,11 +155,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    // if (_formKey.currentState?.validate() ?? false) {
-                    //   // Perform login
-                    // }
-                    Get.to(() => const HomeScreen());
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      LoginResponseModel? result =
+                          await userController.manualLogin();
+                      if (result != null) {
+                        dbController.saveUserToken(result.data.token);
+                        Get.to(() => const HomeScreen());
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primary,
@@ -173,62 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text(
                     'SIGN IN',
                     style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Google Sign-In
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.grey),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    minimumSize: Size(screenWidth, 50),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Iconify(
-                        FlatColorIcons.google,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Sign In with Google',
-                        style: TextStyle(color: secondary, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Apple Sign-In
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.grey),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    minimumSize: Size(screenWidth, 50),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Iconify(
-                        AntDesign.apple_filled,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Sign In with Apple',
-                        style: TextStyle(color: secondary, fontSize: 16),
-                      ),
-                    ],
                   ),
                 ),
                 const SizedBox(height: 20),
