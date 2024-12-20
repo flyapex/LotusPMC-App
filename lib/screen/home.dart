@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lotuspmc/controller/property_controller.dart';
 import 'package:lotuspmc/screen/property_info.dart';
 import 'package:lotuspmc/screen/service_request.dart';
 import 'package:lotuspmc/service/style/color.dart';
@@ -17,6 +18,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    final PropertyController propertyController = Get.put(PropertyController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               text: 'SERVICE REQUEST',
               color: accentBackground,
               onTap: () {
-                Get.to(() => const ServiceRequestScreen());
+                Get.to(() => ServiceRequestScreen());
               },
             ),
             ActionButton(

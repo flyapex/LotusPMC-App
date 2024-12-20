@@ -161,7 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           await userController.manualLogin();
                       if (result != null) {
                         dbController.saveUserToken(result.data.token);
-                        Get.to(() => const HomeScreen());
+                        dbController.saveUserId(result.data.id);
+                        Get.offAll(() => const HomeScreen());
                       }
                     }
                   },

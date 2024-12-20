@@ -41,7 +41,6 @@ class ApiServiceLogin {
     RegisterModel data,
   ) async {
     try {
-      print(data.toJson());
       final response = await dio.post(
         '$baseUrl/register',
         data: registerModelToJson(data),

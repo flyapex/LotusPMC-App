@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lotuspmc/screen/login.dart';
 import 'controller/db_controller.dart';
+import 'screen/home.dart';
 
 void main() async {
   await GetStorage.init();
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       // home: const LoginScreen(),
       home: dbController.getUserToken() == null
           ? const LoginScreen()
-          : const LoginScreen(), //HomeScreen
+          : const HomeScreen(),
     );
   }
 }

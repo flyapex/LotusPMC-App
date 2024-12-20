@@ -92,7 +92,7 @@ class Data {
   String city;
   String email;
   String phoneNumber;
-  String userType;
+  String userType; // Changed to non-nullable with default empty string
 
   Data({
     required this.token,
@@ -103,7 +103,7 @@ class Data {
     required this.city,
     required this.email,
     required this.phoneNumber,
-    required this.userType,
+    this.userType = "", // Default to an empty string
   });
 
   Data copyWith({
@@ -138,7 +138,7 @@ class Data {
         city: json["city"],
         email: json["email"],
         phoneNumber: json["phone_number"],
-        userType: json["user_type"],
+        userType: json["user_type"] ?? "", // Set to empty string if null
       );
 
   Map<String, dynamic> toJson() => {
@@ -153,6 +153,7 @@ class Data {
         "user_type": userType,
       };
 }
+
 // To parse this JSON data, do
 //
 //     final registerModel = registerModelFromJson(jsonString);

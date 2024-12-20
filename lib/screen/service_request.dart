@@ -3,26 +3,22 @@ import 'package:get/get.dart';
 import 'package:lotuspmc/screen/widget/input.dart';
 import '../service/style/color.dart';
 import 'widget/appbar.dart';
-import 'widget/cart.dart';
 import 'widget/text.dart';
+import 'package:lotuspmc/controller/property_controller.dart';
 
-class ServiceRequestScreen extends StatefulWidget {
-  const ServiceRequestScreen({super.key});
-
-  @override
-  State<ServiceRequestScreen> createState() => _ServiceRequestScreenState();
-}
-
-class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
-  String? requestType;
+class ServiceRequestScreen extends StatelessWidget {
+  final PropertyController propertyController = Get.find<PropertyController>();
   final TextEditingController detailsController = TextEditingController();
+  final RxString requestType = ''.obs;
+
+  ServiceRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyappBar(
         title: "MR & MRS COLAMARINO'S\nSERVICE REQUEST",
-        backgroundColor: accentBackground, //change it
+        backgroundColor: accentBackground,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -39,9 +35,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
               ),
             ),
             const SizedBox(height: 20.0),
-            const TitleWithBorder(
-              title: 'SUBMIT REQUEST',
-            ),
+            const TitleWithBorder(title: 'SUBMIT REQUEST'),
             const Text(
               'IDENTIFY YOUR REQUEST TYPE',
               style: TextStyle(
@@ -49,131 +43,60 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Column(
-              children: [
-                RadioListTile<String>(
-                  title: const Text('INTERIOR RESIDENCE'),
-                  value: 'Interior Residence',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('EXTERIOR STRUCTURE'),
-                  value: 'Exterior Structure',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('EXTERIOR GROUNDS'),
-                  value: 'Exterior Grounds',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('HOUSEKEEPING'),
-                  value: 'Housekeeping',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('WATER FEATURES'),
-                  value: 'Water Features',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('STORM PREPAREDNESS'),
-                  value: 'Storm Preparedness',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('OTHER'),
-                  value: 'Other',
-                  groupValue: requestType,
-                  contentPadding: EdgeInsets.zero,
-                  onChanged: (value) {
-                    setState(() {
-                      requestType = value;
-                    });
-                  },
-                ),
-              ],
+            Obx(
+              () => Column(
+                children: [
+                  _buildRadioTile("Interior Residence", requestType),
+                  _buildRadioTile("Exterior Structure", requestType),
+                  _buildRadioTile("Exterior Grounds", requestType),
+                  _buildRadioTile("Housekeeping", requestType),
+                  _buildRadioTile("Water Features", requestType),
+                  _buildRadioTile("Storm Preparedness", requestType),
+                  _buildRadioTile("Other", requestType),
+                ],
+              ),
             ),
             const SizedBox(height: 20.0),
             BigInputBox(
               controller: detailsController,
-              onSubmit: () {
-                if (requestType == null || detailsController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Please fill out all required fields.')),
+              onSubmit: () async {
+                final type = requestType.value;
+                final details = detailsController.text.trim();
+
+                if (type.isEmpty || details.isEmpty) {
+                  propertyController.showSnackbar(
+                    "Error",
+                    "Please fill out all required fields.",
                   );
                   return;
                 }
 
-                print('Request Type: $requestType');
-                print('Details: ${detailsController.text}');
+                await propertyController.fetchServiceRequest(type, details);
+                detailsController.clear();
+                requestType.value = '';
               },
             ),
-            const SizedBox(height: 10),
-            const TitleWithBorder(title: 'PROPERTY FLOORPLANS'),
-            Text(
-              "CLICK ON A FLOORPLAN TO ENLARGE THE VIEW.",
-              style: TextStyle(
-                fontSize: 14,
-                color: secondary.withOpacity(0.5),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Floorplans
-            GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                CartContainer(label: '1ST FLOOR'),
-                CartContainer(label: '2ND FLOOR'),
-                CartContainer(label: '3RD FLOOR'),
-                CartContainer(label: 'BASEMENT'),
-              ],
-            ),
             const SizedBox(height: 40),
+            Obx(
+              () => propertyController.isServiceRequestLoading.value
+                  ? const Center(child: CircularProgressIndicator())
+                  : Container(),
+            ),
           ],
         ).paddingSymmetric(horizontal: 24),
       ),
+    );
+  }
+
+  Widget _buildRadioTile(String title, RxString groupValue) {
+    return RadioListTile<String>(
+      title: Text(title),
+      value: title,
+      groupValue: groupValue.value,
+      contentPadding: EdgeInsets.zero,
+      onChanged: (value) {
+        groupValue.value = value!;
+      },
     );
   }
 }

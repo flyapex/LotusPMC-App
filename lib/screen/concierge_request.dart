@@ -28,7 +28,7 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
     'CONCIERGE MEDICINE',
   ];
 
-  final List<String> selectedServices = [];
+  String? selectedService;
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +52,13 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: services.map((service) {
-                final isSelected = selectedServices.contains(service);
+                final isSelected = selectedService == service;
                 return ChoiceChip(
                   label: Text(service),
                   selected: isSelected,
                   onSelected: (selected) {
                     setState(() {
-                      isSelected
-                          ? selectedServices.remove(service)
-                          : selectedServices.add(service);
+                      selectedService = selected ? service : null;
                     });
                   },
                   selectedColor: primary,
@@ -68,11 +66,6 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
                   labelStyle: TextStyle(
                     color: isSelected ? Colors.white : secondary,
                   ),
-
-                  // shape: RoundedRectangleBorder(
-                  //   side: const BorderSide(color: Colors.white),
-                  //   borderRadius: BorderRadius.circular(8.0),
-                  // ),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(color: Colors.black.withOpacity(0.1)),
                     borderRadius: BorderRadius.circular(8.0),
@@ -91,14 +84,16 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
             BigInputBox(
               controller: detailsController,
               onSubmit: () {
-                if (detailsController.text.isEmpty) {
+                if (detailsController.text.isEmpty || selectedService == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text('Please fill out all required fields.')),
+                        content: Text(
+                            'Please fill out all required fields and select a service.')),
                   );
                   return;
                 }
 
+                print('Selected Service: $selectedService');
                 print('Details: ${detailsController.text}');
               },
             ),
