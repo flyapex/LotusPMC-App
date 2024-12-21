@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_property.dart';
+import 'package:lotuspmc/model/concierge_request_model.dart';
 import 'package:lotuspmc/model/porperty_info_model.dart';
 import 'package:lotuspmc/model/pre_arrival_notification_model.dart';
 import 'package:lotuspmc/model/response_model.dart';
@@ -126,6 +127,61 @@ class PropertyController extends GetxController {
       showSnackbar("Error", "An error occurred: $e");
     } finally {
       isDepartureNotificationLoading.value = false;
+    }
+  }
+
+  var isconciergeRequestLoading = false.obs;
+
+  Future<void> sendConciergeRequest(String details) async {
+    try {
+      isconciergeRequestLoading.value = true;
+
+      final data = ConciergeRequestSendModel(
+        details: details,
+        userId: "43",
+      );
+
+      final response = await ApiServiceProperty.conciergeRequestApi(data);
+
+      if (response != null) {
+        showSnackbar("Success", response.message);
+        await Future.delayed(const Duration(seconds: 2));
+        Get.back(closeOverlays: true);
+      } else {
+        showSnackbar("Error", "Failed to send concierge request.");
+      }
+    } catch (e) {
+      showSnackbar("Error", "An error occurred: $e");
+    } finally {
+      isconciergeRequestLoading.value = false;
+    }
+  }
+
+  var isHomeImprovementServicesLoading = false.obs;
+
+  Future<void> sendHomeImprovementServicesRequest(String details) async {
+    try {
+      isHomeImprovementServicesLoading.value = true;
+
+      final data = ConciergeRequestSendModel(
+        details: details,
+        userId: "43",
+      );
+
+      final response =
+          await ApiServiceProperty.homeImprovementServicesApi(data);
+
+      if (response != null) {
+        showSnackbar("Success", response.message);
+        await Future.delayed(const Duration(seconds: 2));
+        Get.back(closeOverlays: true);
+      } else {
+        showSnackbar("Error", "Failed to send concierge request.");
+      }
+    } catch (e) {
+      showSnackbar("Error", "An error occurred: $e");
+    } finally {
+      isHomeImprovementServicesLoading.value = false;
     }
   }
 }

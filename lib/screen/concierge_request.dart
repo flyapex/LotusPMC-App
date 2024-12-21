@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lotuspmc/controller/property_controller.dart';
 import 'package:lotuspmc/service/style/color.dart';
 
 import 'widget/appbar.dart';
@@ -14,6 +15,7 @@ class ConciergeRequestScreen extends StatefulWidget {
 }
 
 class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
+  PropertyController propertyController = Get.find();
   final TextEditingController detailsController = TextEditingController();
 
   final List<String> services = [
@@ -81,22 +83,35 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
                 color: secondary,
               ),
             ).paddingOnly(top: 20, bottom: 10),
-            BigInputBox(
-              controller: detailsController,
-              onSubmit: () {
-                if (detailsController.text.isEmpty || selectedService == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(
-                            'Please fill out all required fields and select a service.')),
-                  );
-                  return;
-                }
+            Obx(
+              () {
+                return BigInputBox(
+                  title: propertyController.isconciergeRequestLoading.value
+                      ? "Submitting..."
+                      : "SUBMIT",
+                  controller: detailsController,
+                  onSubmit: () async {
+                    if (detailsController.text.isEmpty) {
+                      // ||    selectedService == null
 
-                print('Selected Service: $selectedService');
-                print('Details: ${detailsController.text}');
+                      Get.snackbar(
+                        'Error',
+                        'Please enter details.',
+                        snackPosition: SnackPosition.TOP,
+                        borderRadius: 10,
+                        margin: const EdgeInsets.all(10),
+                      );
+                      return;
+                    }
+
+                    await propertyController.sendConciergeRequest(
+                      detailsController.text.trim(),
+                    );
+                    detailsController.clear();
+                  },
+                );
               },
-            ),
+            )
           ],
         ).paddingSymmetric(horizontal: 24),
       ),

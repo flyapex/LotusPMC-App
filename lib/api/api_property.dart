@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:lotuspmc/controller/db_controller.dart';
-import 'package:lotuspmc/model/auth_model.dart';
+import 'package:lotuspmc/model/concierge_request_model.dart';
 import 'package:lotuspmc/model/porperty_info_model.dart';
 import 'package:lotuspmc/model/pre_arrival_notification_model.dart';
 import 'package:lotuspmc/model/response_model.dart';
@@ -61,18 +61,18 @@ class ApiServiceProperty {
     }
   }
 
-  static Future<LoginResponseModel?> conciergeRequestApi(
-    LoginModel data,
+  static Future<ResponseModel?> conciergeRequestApi(
+    ConciergeRequestSendModel data,
   ) async {
     try {
       print(data.toJson());
       final response = await dio.post(
-        '$baseUrl/login',
-        data: loginModelToJson(data),
+        '$baseUrl/concierge-submit',
+        data: conciergeRequestSendModelToJson(data),
       );
       print(response.data);
       if (response.statusCode == 200) {
-        return loginResponseModelFromJson(jsonEncode(response.data));
+        return responseModelFromJson(jsonEncode(response.data));
       }
       return null;
     } catch (e) {
@@ -121,18 +121,18 @@ class ApiServiceProperty {
     }
   }
 
-  static Future<LoginResponseModel?> homeImprovementServicesApi(
-    LoginModel data,
+  static Future<ResponseModel?> homeImprovementServicesApi(
+    ConciergeRequestSendModel data,
   ) async {
     try {
       print(data.toJson());
       final response = await dio.post(
-        '$baseUrl/login',
-        data: loginModelToJson(data),
+        '$baseUrl/home-improvement/submit',
+        data: conciergeRequestSendModelToJson(data),
       );
       print(response.data);
       if (response.statusCode == 200) {
-        return loginResponseModelFromJson(jsonEncode(response.data));
+        return responseModelFromJson(jsonEncode(response.data));
       }
       return null;
     } catch (e) {

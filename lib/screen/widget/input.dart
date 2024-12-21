@@ -4,10 +4,15 @@ import 'package:lotuspmc/service/style/color.dart';
 
 class BigInputBox extends StatefulWidget {
   final TextEditingController controller;
+  final String title;
   final Function() onSubmit;
 
-  const BigInputBox(
-      {super.key, required this.controller, required this.onSubmit});
+  const BigInputBox({
+    super.key,
+    required this.controller,
+    required this.onSubmit,
+    this.title = 'SUBMIT',
+  });
 
   @override
   State<BigInputBox> createState() => _BigInputBoxState();
@@ -55,7 +60,7 @@ class _BigInputBoxState extends State<BigInputBox> {
                   textStyle: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.w100)),
               child: Text(
-                'SUBMIT',
+                widget.title,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
