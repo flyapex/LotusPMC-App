@@ -11,143 +11,80 @@ String propertyInformationResponseToJson(PropertyInformationResponse data) =>
     json.encode(data.toJson());
 
 class PropertyInformationResponse {
-  bool success;
-  String message;
-  Data data;
+  bool? success;
+  String? message;
+  Data? data;
 
   PropertyInformationResponse({
-    required this.success,
-    required this.message,
-    required this.data,
+    this.success,
+    this.message,
+    this.data,
   });
-
-  PropertyInformationResponse copyWith({
-    bool? success,
-    String? message,
-    Data? data,
-  }) =>
-      PropertyInformationResponse(
-        success: success ?? this.success,
-        message: message ?? this.message,
-        data: data ?? this.data,
-      );
 
   factory PropertyInformationResponse.fromJson(Map<String, dynamic> json) =>
       PropertyInformationResponse(
         success: json["success"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data": data.toJson(),
+        "data": data?.toJson(),
       };
 }
 
 class Data {
-  int id;
-  String address;
-  String sizeOfHome;
-  String numberOfStories;
-  String constructionType;
-  String hasPool;
-  String poolType;
-  String gatedCommunity;
-  String yearBuilt;
-  String impactWindows;
-  String hasHoa;
-  String gatedProperty;
-  String contactName;
-  String contactEmail;
-  String contactCell;
-  String preferredContactMethod;
-  String managerId;
-  String tenantIds;
-  String contactedIds;
-  DateTime createdAt;
-  DateTime updatedAt;
-  List<dynamic> floors;
-  Manager manager;
+  int? id;
+  String? address;
+  String? sizeOfHome;
+  String? numberOfStories;
+  String? constructionType;
+  String? hasPool;
+  String? poolType;
+  String? gatedCommunity;
+  String? yearBuilt;
+  String? impactWindows;
+  String? hasHoa;
+  String? gatedProperty;
+  String? contactName;
+  String? contactEmail;
+  String? contactCell;
+  String? preferredContactMethod;
+  String? managerId;
+  String? tenantIds;
+  dynamic contactedIds;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  List<Floor>? floors;
+  Manager? manager;
 
   Data({
-    required this.id,
-    required this.address,
-    required this.sizeOfHome,
-    required this.numberOfStories,
-    required this.constructionType,
-    required this.hasPool,
-    required this.poolType,
-    required this.gatedCommunity,
-    required this.yearBuilt,
-    required this.impactWindows,
-    required this.hasHoa,
-    required this.gatedProperty,
-    required this.contactName,
-    required this.contactEmail,
-    required this.contactCell,
-    required this.preferredContactMethod,
-    required this.managerId,
-    required this.tenantIds,
-    required this.contactedIds,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.floors,
-    required this.manager,
+    this.id,
+    this.address,
+    this.sizeOfHome,
+    this.numberOfStories,
+    this.constructionType,
+    this.hasPool,
+    this.poolType,
+    this.gatedCommunity,
+    this.yearBuilt,
+    this.impactWindows,
+    this.hasHoa,
+    this.gatedProperty,
+    this.contactName,
+    this.contactEmail,
+    this.contactCell,
+    this.preferredContactMethod,
+    this.managerId,
+    this.tenantIds,
+    this.contactedIds,
+    this.createdAt,
+    this.updatedAt,
+    this.floors,
+    this.manager,
   });
-
-  Data copyWith({
-    int? id,
-    String? address,
-    String? sizeOfHome,
-    String? numberOfStories,
-    String? constructionType,
-    String? hasPool,
-    String? poolType,
-    String? gatedCommunity,
-    String? yearBuilt,
-    String? impactWindows,
-    String? hasHoa,
-    String? gatedProperty,
-    String? contactName,
-    String? contactEmail,
-    String? contactCell,
-    String? preferredContactMethod,
-    String? managerId,
-    String? tenantIds,
-    String? contactedIds,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    List<dynamic>? floors,
-    Manager? manager,
-  }) =>
-      Data(
-        id: id ?? this.id,
-        address: address ?? this.address,
-        sizeOfHome: sizeOfHome ?? this.sizeOfHome,
-        numberOfStories: numberOfStories ?? this.numberOfStories,
-        constructionType: constructionType ?? this.constructionType,
-        hasPool: hasPool ?? this.hasPool,
-        poolType: poolType ?? this.poolType,
-        gatedCommunity: gatedCommunity ?? this.gatedCommunity,
-        yearBuilt: yearBuilt ?? this.yearBuilt,
-        impactWindows: impactWindows ?? this.impactWindows,
-        hasHoa: hasHoa ?? this.hasHoa,
-        gatedProperty: gatedProperty ?? this.gatedProperty,
-        contactName: contactName ?? this.contactName,
-        contactEmail: contactEmail ?? this.contactEmail,
-        contactCell: contactCell ?? this.contactCell,
-        preferredContactMethod:
-            preferredContactMethod ?? this.preferredContactMethod,
-        managerId: managerId ?? this.managerId,
-        tenantIds: tenantIds ?? this.tenantIds,
-        contactedIds: contactedIds ?? this.contactedIds,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        floors: floors ?? this.floors,
-        manager: manager ?? this.manager,
-      );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
@@ -169,10 +106,17 @@ class Data {
         managerId: json["manager_id"],
         tenantIds: json["tenant_ids"],
         contactedIds: json["contacted_ids"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        floors: List<dynamic>.from(json["floors"].map((x) => x)),
-        manager: Manager.fromJson(json["manager"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        floors: json["floors"] == null
+            ? []
+            : List<Floor>.from(json["floors"]!.map((x) => Floor.fromJson(x))),
+        manager:
+            json["manager"] == null ? null : Manager.fromJson(json["manager"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -195,70 +139,133 @@ class Data {
         "manager_id": managerId,
         "tenant_ids": tenantIds,
         "contacted_ids": contactedIds,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "floors": List<dynamic>.from(floors.map((x) => x)),
-        "manager": manager.toJson(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "floors": floors == null
+            ? []
+            : List<dynamic>.from(floors!.map((x) => x.toJson())),
+        "manager": manager?.toJson(),
+      };
+}
+
+class Floor {
+  int? id;
+  String? floorName;
+  String? floorImage;
+  String? propertyId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  List<Room>? rooms;
+
+  Floor({
+    this.id,
+    this.floorName,
+    this.floorImage,
+    this.propertyId,
+    this.createdAt,
+    this.updatedAt,
+    this.rooms,
+  });
+
+  factory Floor.fromJson(Map<String, dynamic> json) => Floor(
+        id: json["id"],
+        floorName: json["floor_name"],
+        floorImage: json["floor_image"],
+        propertyId: json["property_id"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        rooms: json["rooms"] == null
+            ? []
+            : List<Room>.from(json["rooms"]!.map((x) => Room.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "floor_name": floorName,
+        "floor_image": floorImage,
+        "property_id": propertyId,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "rooms": rooms == null
+            ? []
+            : List<dynamic>.from(rooms!.map((x) => x.toJson())),
+      };
+}
+
+class Room {
+  int? id;
+  String? roomName;
+  String? propertyId;
+  String? floorId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Room({
+    this.id,
+    this.roomName,
+    this.propertyId,
+    this.floorId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Room.fromJson(Map<String, dynamic> json) => Room(
+        id: json["id"],
+        roomName: json["room_name"],
+        propertyId: json["property_id"],
+        floorId: json["floor_id"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "room_name": roomName,
+        "property_id": propertyId,
+        "floor_id": floorId,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }
 
 class Manager {
-  int id;
-  String fName;
-  String lName;
-  String email;
-  String phoneNumber;
-  String city;
-  String address;
+  int? id;
+  String? fName;
+  String? lName;
+  String? email;
+  String? phoneNumber;
+  String? city;
+  String? address;
   dynamic note;
+  dynamic title;
   dynamic emailVerifiedAt;
-  String userType;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String? userType;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Manager({
-    required this.id,
-    required this.fName,
-    required this.lName,
-    required this.email,
-    required this.phoneNumber,
-    required this.city,
-    required this.address,
-    required this.note,
-    required this.emailVerifiedAt,
-    required this.userType,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.fName,
+    this.lName,
+    this.email,
+    this.phoneNumber,
+    this.city,
+    this.address,
+    this.note,
+    this.title,
+    this.emailVerifiedAt,
+    this.userType,
+    this.createdAt,
+    this.updatedAt,
   });
-
-  Manager copyWith({
-    int? id,
-    String? fName,
-    String? lName,
-    String? email,
-    String? phoneNumber,
-    String? city,
-    String? address,
-    dynamic note,
-    dynamic emailVerifiedAt,
-    String? userType,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) =>
-      Manager(
-        id: id ?? this.id,
-        fName: fName ?? this.fName,
-        lName: lName ?? this.lName,
-        email: email ?? this.email,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
-        city: city ?? this.city,
-        address: address ?? this.address,
-        note: note ?? this.note,
-        emailVerifiedAt: emailVerifiedAt ?? this.emailVerifiedAt,
-        userType: userType ?? this.userType,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
 
   factory Manager.fromJson(Map<String, dynamic> json) => Manager(
         id: json["id"],
@@ -269,10 +276,15 @@ class Manager {
         city: json["city"],
         address: json["address"],
         note: json["note"],
+        title: json["title"],
         emailVerifiedAt: json["email_verified_at"],
         userType: json["user_type"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -284,9 +296,10 @@ class Manager {
         "city": city,
         "address": address,
         "note": note,
+        "title": title,
         "email_verified_at": emailVerifiedAt,
         "user_type": userType,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

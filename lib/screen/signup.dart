@@ -254,7 +254,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           await userController.manualRegister();
                       if (response != null) {
                         dbController.saveUserToken(response.data.token);
-                        dbController.saveUserId(response.data.id);
+                        dbController.saveUserID(response.data.id.toString());
 
                         Get.offAll(() => const HomeScreen());
                       }

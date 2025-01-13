@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lotuspmc/controller/property_controller.dart';
+import 'package:lotuspmc/controller/cr_controller.dart';
 import 'package:lotuspmc/service/style/color.dart';
-
 import 'widget/appbar.dart';
 import 'widget/input.dart';
 import 'widget/text.dart';
@@ -15,7 +14,7 @@ class ConciergeRequestScreen extends StatefulWidget {
 }
 
 class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
-  PropertyController propertyController = Get.find();
+  CRController crController = Get.find();
   final TextEditingController detailsController = TextEditingController();
 
   final List<String> services = [
@@ -36,7 +35,7 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyappBar(
-        title: "MR & MRS COLAMARINO'S\nCONCIERGE REQUEST",
+        title: "\nCONCIERGE REQUEST",
         backgroundColor: infoColor,
       ),
       body: SingleChildScrollView(
@@ -44,7 +43,7 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'PLEASE LET US KNOW YOUR NEEDS BELOW.',
+              'Lotus has strategic alliances with a host of concierge focused companies that are at your full disposal. Click here for a complete list of offerings and let us know in the area below how we can assist.\n',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: secondary,
@@ -86,7 +85,7 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
             Obx(
               () {
                 return BigInputBox(
-                  title: propertyController.isconciergeRequestLoading.value
+                  title: crController.isconciergeRequestLoading.value
                       ? "Submitting..."
                       : "SUBMIT",
                   controller: detailsController,
@@ -104,7 +103,7 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
                       return;
                     }
 
-                    await propertyController.sendConciergeRequest(
+                    await crController.sendConciergeRequest(
                       detailsController.text.trim(),
                     );
                     detailsController.clear();

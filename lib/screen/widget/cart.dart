@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lotuspmc/service/style/color.dart';
 
 class CartContainer extends StatelessWidget {
   final String label;
-  const CartContainer({super.key, required this.label});
+  final String image;
+  const CartContainer({super.key, required this.label, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +15,20 @@ class CartContainer extends StatelessWidget {
           elevation: 3,
           child: Stack(
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Icon(
-                  Icons.search,
-                  color: secondary,
-                  size: 30,
-                ),
-              ).paddingAll(5),
+              // Align(
+              //   alignment: Alignment.topRight,
+              //   child: Icon(
+              //     Icons.search,
+              //     color: secondary,
+              //     size: 30,
+              //   ),
+              // ).paddingAll(5),
               SizedBox(
                 height: 140,
                 child: Center(
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    height: 80,
+                  child: Image.network(
+                    "http://sahedstar.xyz/$image",
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -45,6 +45,28 @@ class CartContainer extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class FullImageView extends StatelessWidget {
+  final String title;
+  final String imagerUrl;
+  const FullImageView(
+      {super.key, required this.imagerUrl, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: Image.network(
+          "http://sahedstar.xyz/$imagerUrl",
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }

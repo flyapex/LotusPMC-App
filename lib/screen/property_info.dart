@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lotuspmc/controller/property_controller.dart';
 import 'package:lotuspmc/service/style/color.dart';
 import 'widget/appbar.dart';
+import 'widget/cart.dart';
 import 'widget/text.dart';
 
 class PropertyInformationScreen extends StatelessWidget {
@@ -11,11 +12,11 @@ class PropertyInformationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PropertyController propertyController = Get.find();
-    propertyController.fetchPropertyInformation(43);
+    propertyController.fetchPropertyInformation();
 
     return Scaffold(
       appBar: MyappBar(
-        title: "MR & MRS COLAMARINO'S\nPROPERTY INFORMATION",
+        title: "\nPROPERTY INFORMATION",
         backgroundColor: lightBackground,
       ),
       body: Obx(
@@ -32,7 +33,7 @@ class PropertyInformationScreen extends StatelessWidget {
                 const TitleWithBorder(title: 'HOME OVERVIEW'),
                 SubTitleWithBorder(
                   title: 'ADDRESS:',
-                  subtitle: property.address,
+                  subtitle: property!.address ?? 'N/A',
                 ),
                 Row(
                   children: [
@@ -40,25 +41,25 @@ class PropertyInformationScreen extends StatelessWidget {
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'SIZE OF HOME:',
-                        subtitle: property.sizeOfHome,
+                        subtitle: property.sizeOfHome ?? 'N/A',
                       ),
                     ),
                     Expanded(
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'YEAR BUILT:',
-                        subtitle: property.yearBuilt,
+                        subtitle: property.yearBuilt ?? 'N/A',
                       ),
                     ),
                   ],
                 ),
                 SubTitleWithBorder(
                   title: 'NUMBER OF STORIES:',
-                  subtitle: property.numberOfStories,
+                  subtitle: property.numberOfStories ?? 'N/A',
                 ),
                 SubTitleWithBorder(
                   title: 'CONSTRUCTION TYPE:',
-                  subtitle: property.constructionType,
+                  subtitle: property.constructionType ?? 'N/A',
                 ),
                 Row(
                   children: [
@@ -66,14 +67,14 @@ class PropertyInformationScreen extends StatelessWidget {
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'IMPACT WINDOWS:',
-                        subtitle: property.impactWindows,
+                        subtitle: property.impactWindows ?? 'N/A',
                       ),
                     ),
                     Expanded(
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'NUMBER OF STORIES:',
-                        subtitle: property.numberOfStories,
+                        subtitle: property.numberOfStories ?? 'N/A',
                       ),
                     ),
                   ],
@@ -93,7 +94,7 @@ class PropertyInformationScreen extends StatelessWidget {
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'HOA:',
-                        subtitle: property.hasHoa,
+                        subtitle: property.hasHoa ?? 'N/A',
                       ),
                     ),
                   ],
@@ -104,14 +105,14 @@ class PropertyInformationScreen extends StatelessWidget {
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'GATED COMMUNITY:',
-                        subtitle: property.gatedCommunity,
+                        subtitle: property.gatedCommunity ?? 'N/A',
                       ),
                     ),
                     Expanded(
                       flex: 1,
                       child: SubTitleWithBorder(
                         title: 'GATED PROPERTY:',
-                        subtitle: property.gatedProperty,
+                        subtitle: property.gatedProperty ?? 'N/A',
                       ),
                     ),
                   ],
@@ -121,24 +122,54 @@ class PropertyInformationScreen extends StatelessWidget {
 
                 SubTitleWithBorder(
                   title: 'NAME:',
-                  subtitle: property.contactName,
+                  subtitle: property.contactName ?? 'N/A',
                   padding: 10,
                 ),
                 SubTitleWithBorder(
                   title: 'EMAIL:',
-                  subtitle: property.contactEmail,
+                  subtitle: property.contactEmail ?? 'N/A',
                   padding: 5,
                 ),
                 SubTitleWithBorder(
                   title: 'CELL:',
-                  subtitle: property.contactCell,
+                  subtitle: property.contactCell ?? 'N/A',
                   padding: 5,
                 ),
                 SubTitleWithBorder(
                   title: 'CLIENT PREFERS TO BE CONTACTED VIA:',
-                  subtitle: property.preferredContactMethod,
+                  subtitle: property.preferredContactMethod ?? 'N/A',
                   padding: 5,
                 ),
+
+                const TitleWithBorder(title: 'PROPERTY FLOORPLANS'),
+                const SizedBox(height: 20),
+                // Floorplans
+                GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: List.generate(
+                      property.floors!.length,
+                      (index) {
+                        final floor = property.floors![index];
+                        return InkWell(
+                          onTap: () {
+                            Get.to(
+                              FullImageView(
+                                title: floor.floorName ?? 'N/A',
+                                imagerUrl: floor.floorImage ?? 'N/A',
+                              ),
+                            );
+                          },
+                          child: CartContainer(
+                            label: floor.floorName ?? 'N/A',
+                            image: floor.floorImage ?? 'N/A',
+                          ),
+                        );
+                      },
+                    )),
                 const SizedBox(height: 25),
                 ElevatedButton(
                   onPressed: () {},
@@ -169,21 +200,7 @@ class PropertyInformationScreen extends StatelessWidget {
                 //     color: secondary.withOpacity(0.5),
                 //   ),
                 // ),
-                const SizedBox(height: 20),
-                // Floorplans
-                // GridView.count(
-                //   crossAxisCount: 2,
-                //   crossAxisSpacing: 10,
-                //   mainAxisSpacing: 10,
-                //   shrinkWrap: true,
-                //   physics: const NeverScrollableScrollPhysics(),
-                //   children: const [
-                //     CartContainer(label: '1ST FLOOR'),
-                //     CartContainer(label: '2ND FLOOR'),
-                //     CartContainer(label: '3RD FLOOR'),
-                //     CartContainer(label: 'BASEMENT'),
-                //   ],
-                // ),
+
                 const SizedBox(height: 40),
               ],
             ).paddingSymmetric(horizontal: 24),

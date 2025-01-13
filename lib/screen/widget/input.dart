@@ -74,3 +74,46 @@ class _BigInputBoxState extends State<BigInputBox> {
     );
   }
 }
+
+// now make for small height input box
+class SmallInputBox extends StatefulWidget {
+  final TextEditingController controller;
+  final String title;
+  final int maxLines;
+  final Function() onSubmit;
+
+  const SmallInputBox({
+    super.key,
+    required this.controller,
+    required this.onSubmit,
+    this.title = 'SUBMIT',
+    this.maxLines = 1,
+  });
+
+  @override
+  State<SmallInputBox> createState() => _SmallInputBoxState();
+}
+
+class _SmallInputBoxState extends State<SmallInputBox> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: widget.controller,
+          maxLines: widget.maxLines,
+          decoration: InputDecoration(
+            labelText: widget.title,
+            labelStyle: TextStyle(
+              color: secondary.withOpacity(0.5),
+            ),
+            border: const OutlineInputBorder(),
+          ),
+          onSubmitted: (value) {
+            widget.onSubmit();
+          },
+        ),
+      ],
+    );
+  }
+}

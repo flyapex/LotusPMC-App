@@ -3,12 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:lotuspmc/controller/db_controller.dart';
-import 'package:lotuspmc/model/concierge_request_model.dart';
+import 'package:lotuspmc/model/common.dart';
 import 'package:lotuspmc/model/porperty_info_model.dart';
 import 'package:lotuspmc/model/pre_arrival_notification_model.dart';
-import 'package:lotuspmc/model/response_model.dart';
-
-import '../model/service_request_model.dart';
 
 final dio = Dio();
 
@@ -26,53 +23,18 @@ class ApiServiceProperty {
     int propertyId,
   ) async {
     try {
+      print('$baseUrl/get-tenant-property/$propertyId');
+      print(getx.Get.find<DBController>().getUserToken()!);
       final response = await dio.get(
         '$baseUrl/get-tenant-property/$propertyId',
+        options: Options(headers: headers),
       );
-      print(response.data);
+      // print('-------------------------------');
+      // print(response.data);
+      // print('-------------------------------');
+
       if (response.statusCode == 200) {
         return propertyInformationResponseFromJson(jsonEncode(response.data));
-      }
-      return null;
-    } catch (e) {
-      print("Unexpected Error: $e");
-      return null;
-    }
-  }
-
-  static Future<ResponseModel?> serviceRequestApi(
-    ServiceRequestSendModel data,
-  ) async {
-    try {
-      print('Service Request Data: ${data.toJson()}');
-      final response = await dio.post(
-        '$baseUrl/sr/submit',
-        data: serviceRequestSendModelToJson(data),
-      );
-      print(response);
-      print(response.data);
-      if (response.statusCode == 200) {
-        return responseModelFromJson(jsonEncode(response.data));
-      }
-      return null;
-    } catch (e) {
-      print("Unexpected Error: $e");
-      return null;
-    }
-  }
-
-  static Future<ResponseModel?> conciergeRequestApi(
-    ConciergeRequestSendModel data,
-  ) async {
-    try {
-      print(data.toJson());
-      final response = await dio.post(
-        '$baseUrl/concierge-submit',
-        data: conciergeRequestSendModelToJson(data),
-      );
-      print(response.data);
-      if (response.statusCode == 200) {
-        return responseModelFromJson(jsonEncode(response.data));
       }
       return null;
     } catch (e) {
@@ -89,46 +51,6 @@ class ApiServiceProperty {
       final response = await dio.post(
         '$baseUrl/pre-arrival-submit',
         data: preArrivalNotificationSendModelToJson(data),
-      );
-      print(response.data);
-      if (response.statusCode == 200) {
-        return responseModelFromJson(jsonEncode(response.data));
-      }
-      return null;
-    } catch (e) {
-      print("Unexpected Error: $e");
-      return null;
-    }
-  }
-
-  static Future<ResponseModel?> departureNofiticationApi(
-    PreArrivalNotificationSendModel data,
-  ) async {
-    try {
-      print("Request Payload: ${data.toJson()}");
-      final response = await dio.post(
-        '$baseUrl/departure-submit',
-        data: preArrivalNotificationSendModelToJson(data),
-      );
-      print(response.data);
-      if (response.statusCode == 200) {
-        return responseModelFromJson(jsonEncode(response.data));
-      }
-      return null;
-    } catch (e) {
-      print("Unexpected Error: $e");
-      return null;
-    }
-  }
-
-  static Future<ResponseModel?> homeImprovementServicesApi(
-    ConciergeRequestSendModel data,
-  ) async {
-    try {
-      print(data.toJson());
-      final response = await dio.post(
-        '$baseUrl/home-improvement/submit',
-        data: conciergeRequestSendModelToJson(data),
       );
       print(response.data);
       if (response.statusCode == 200) {

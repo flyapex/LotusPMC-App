@@ -22,7 +22,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MyappBar(
-          title: "MR & MRS COLAMARINO'S\nDOCUMENTS",
+          title: "\nDOCUMENTS",
           backgroundColor: mutedText,
         ),
         body: Obx(

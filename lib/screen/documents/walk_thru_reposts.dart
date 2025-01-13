@@ -16,7 +16,7 @@ class WalkThruReposts extends StatelessWidget {
 
     return Scaffold(
       appBar: MyappBar(
-        title: "MR & MRS COLAMARINO'S\nWALK-THRU REPORTS",
+        title: "\nWALK-THRU REPORTS",
         backgroundColor: highlightColor,
       ),
       body: SingleChildScrollView(

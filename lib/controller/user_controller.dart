@@ -2,19 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_auth.dart';
 import 'package:lotuspmc/model/auth_model.dart';
+import 'package:lotuspmc/service/common.dart';
 
 class UserController extends GetxController {
-  // Snackbar
-  void showSnackbar(String title, String message) {
-    Get.snackbar(
-      title,
-      message,
-      snackPosition: SnackPosition.TOP,
-      borderRadius: 10,
-      margin: const EdgeInsets.all(10),
-    );
-  }
-
   TextEditingController emailController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();

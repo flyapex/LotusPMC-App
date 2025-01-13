@@ -1,31 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_property.dart';
-import 'package:lotuspmc/model/concierge_request_model.dart';
+import 'package:lotuspmc/api/api_sr.dart';
+import 'package:lotuspmc/model/common.dart';
 import 'package:lotuspmc/model/porperty_info_model.dart';
 import 'package:lotuspmc/model/pre_arrival_notification_model.dart';
-import 'package:lotuspmc/model/response_model.dart';
-import 'package:lotuspmc/model/service_request_model.dart';
+import 'package:lotuspmc/model/sr/sr_send.dart';
+import 'package:lotuspmc/service/common.dart';
+
+import 'db_controller.dart';
+import 'package:get/get.dart' as getx;
+
+String userID = getx.Get.find<DBController>().getUserID()!;
 
 class PropertyController extends GetxController {
-  // Snackbar
-  void showSnackbar(String title, String message) {
-    Get.snackbar(
-      title,
-      message,
-      snackPosition: SnackPosition.TOP,
-      borderRadius: 10,
-      margin: const EdgeInsets.all(10),
-    );
-  } // Method to fetch property information
-
   var propertyInfo = Rxn<PropertyInformationResponse>();
   var isLoading = false.obs;
 
-  void fetchPropertyInformation(int propertyId) async {
+  void fetchPropertyInformation() async {
     try {
       isLoading.value = true;
-      final info = await ApiServiceProperty.propertyInformationApi(propertyId);
+      final info =
+          await ApiServiceProperty.propertyInformationApi(int.parse(userID));
       if (info != null) {
         propertyInfo.value = info;
       } else {
@@ -44,12 +39,12 @@ class PropertyController extends GetxController {
   Future<void> fetchServiceRequest(String requestType, String details) async {
     try {
       isServiceRequestLoading.value = true;
-      final info = await ApiServiceProperty.serviceRequestApi(
+      final info = await ApiServiceSR.srSendApi(
         ServiceRequestSendModel(
           srType: requestType,
           details: details,
           isAreaIdentified: "1",
-          userId: "43",
+          userId: userID,
         ),
       );
 
@@ -79,7 +74,7 @@ class PropertyController extends GetxController {
       final notificationData = PreArrivalNotificationSendModel(
         date: arrivalDateTime.toIso8601String().split('T')[0],
         time: arrivalDateTime.toIso8601String().split('T')[1].split('.')[0],
-        userId: "43",
+        userId: userID,
       );
 
       final response =
@@ -96,92 +91,6 @@ class PropertyController extends GetxController {
       showSnackbar("Error", "An error occurred: $e");
     } finally {
       isPreArrivalNotificationLoading.value = false;
-    }
-  }
-
-  var isDepartureNotificationLoading = false.obs;
-
-  Future<void> sendDepartureNofitication(
-    DateTime arrivalDateTime,
-  ) async {
-    try {
-      isDepartureNotificationLoading.value = true;
-
-      final notificationData = PreArrivalNotificationSendModel(
-        date: arrivalDateTime.toIso8601String().split('T')[0],
-        time: arrivalDateTime.toIso8601String().split('T')[1].split('.')[0],
-        userId: "43",
-      );
-
-      final response =
-          await ApiServiceProperty.departureNofiticationApi(notificationData);
-
-      if (response != null) {
-        showSnackbar("Success", response.message);
-        await Future.delayed(const Duration(seconds: 2));
-        Get.back(closeOverlays: true);
-      } else {
-        showSnackbar("Error", "Failed to send departure notification.");
-      }
-    } catch (e) {
-      showSnackbar("Error", "An error occurred: $e");
-    } finally {
-      isDepartureNotificationLoading.value = false;
-    }
-  }
-
-  var isconciergeRequestLoading = false.obs;
-
-  Future<void> sendConciergeRequest(String details) async {
-    try {
-      isconciergeRequestLoading.value = true;
-
-      final data = ConciergeRequestSendModel(
-        details: details,
-        userId: "43",
-      );
-
-      final response = await ApiServiceProperty.conciergeRequestApi(data);
-
-      if (response != null) {
-        showSnackbar("Success", response.message);
-        await Future.delayed(const Duration(seconds: 2));
-        Get.back(closeOverlays: true);
-      } else {
-        showSnackbar("Error", "Failed to send concierge request.");
-      }
-    } catch (e) {
-      showSnackbar("Error", "An error occurred: $e");
-    } finally {
-      isconciergeRequestLoading.value = false;
-    }
-  }
-
-  var isHomeImprovementServicesLoading = false.obs;
-
-  Future<void> sendHomeImprovementServicesRequest(String details) async {
-    try {
-      isHomeImprovementServicesLoading.value = true;
-
-      final data = ConciergeRequestSendModel(
-        details: details,
-        userId: "43",
-      );
-
-      final response =
-          await ApiServiceProperty.homeImprovementServicesApi(data);
-
-      if (response != null) {
-        showSnackbar("Success", response.message);
-        await Future.delayed(const Duration(seconds: 2));
-        Get.back(closeOverlays: true);
-      } else {
-        showSnackbar("Error", "Failed to send concierge request.");
-      }
-    } catch (e) {
-      showSnackbar("Error", "An error occurred: $e");
-    } finally {
-      isHomeImprovementServicesLoading.value = false;
     }
   }
 }

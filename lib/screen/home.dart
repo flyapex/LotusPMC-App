@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lotuspmc/controller/cr_controller.dart';
+import 'package:lotuspmc/controller/db_controller.dart';
+import 'package:lotuspmc/controller/dep_controller.dart';
+import 'package:lotuspmc/controller/hi_controller.dart';
 import 'package:lotuspmc/controller/property_controller.dart';
+import 'package:lotuspmc/controller/sr_controller.dart';
 import 'package:lotuspmc/screen/property_info.dart';
 import 'package:lotuspmc/screen/service_request.dart';
 import 'package:lotuspmc/service/style/color.dart';
 
 import 'concierge_request.dart';
-import 'departure_nofitication.dart';
+import 'dep_nofitication.dart';
 import 'documents.dart';
 import 'home_improvement_services.dart';
 import 'pre_arrival_notification.dart';
@@ -18,8 +23,21 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get.lazyPut(() => PropertyController());
+    // Get.lazyPut(() => CRController());
+    // Get.lazyPut(() => DepController());
+    // Get.lazyPut(() => HIController());
     // ignore: unused_local_variable
     final PropertyController propertyController = Get.put(PropertyController());
+    // ignore: unused_local_variable
+    final CRController crController = Get.put(CRController());
+    // ignore: unused_local_variable
+    final DepController depController = Get.put(DepController());
+    // ignore: unused_local_variable
+    final HIController hiController = Get.put(HIController());
+    // ignore: unused_local_variable
+    final SRController srController = Get.put(SRController());
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -32,7 +50,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 26),
             Text(
-              'WELCOME MR & MRS COLAMARINO',
+              'WELCOME ${Get.find<DBController>().getUserName()!.toUpperCase()}',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -83,7 +101,7 @@ class HomeScreen extends StatelessWidget {
               text: 'DEPARTURE NOTIFICATION & REFRESH',
               color: borderColor,
               onTap: () {
-                Get.to(() => const DepartureNofitication());
+                Get.to(() => const DepartureNofiticationScreen());
               },
             ),
             const SizedBox(height: 30),

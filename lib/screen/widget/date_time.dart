@@ -44,9 +44,15 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
   late String selectedMinute;
   late String selectedPeriod;
 
+  List<String> years = [];
+
   @override
   void initState() {
     super.initState();
+    // Generate year range dynamically
+    int currentYear = DateTime.now().year;
+    years = List.generate(11, (i) => (currentYear - 1 + i).toString());
+
     // Initialize the values based on the provided initial date
     selectedMonth = months[widget.initialDate.month - 1];
     selectedDay = widget.initialDate.day.toString().padLeft(2, '0');
@@ -128,7 +134,7 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
             const SizedBox(width: 8),
             Expanded(
               child: _buildCupertinoPicker(
-                ["2023", "2024", "2025"],
+                years,
                 selectedYear,
                 (val) => setState(() {
                   selectedYear = val;
@@ -162,6 +168,18 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
             const SizedBox(width: 8),
             Expanded(
               child: _buildCupertinoPicker(
+                List.generate(
+                    60, (i) => i.toString().padLeft(2, '0')), // Minute selector
+                selectedMinute,
+                (val) => setState(() {
+                  selectedMinute = val;
+                  widget.onDateTimeChanged(_getSelectedDateTime());
+                }),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _buildCupertinoPicker(
                 ["AM", "PM"],
                 selectedPeriod,
                 (val) => setState(() {
@@ -170,8 +188,6 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
                 }),
               ),
             ),
-            Expanded(child: Container()),
-            const SizedBox(width: 8),
           ],
         ),
       ],

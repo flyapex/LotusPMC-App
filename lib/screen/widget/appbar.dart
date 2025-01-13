@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lotuspmc/service/style/color.dart';
+
+import '../../controller/db_controller.dart';
 
 class MyappBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -23,7 +26,7 @@ class MyappBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 20),
           Text(
-            title,
+            '${Get.find<DBController>().getUserName()!.toUpperCase()} $title',
             style: GoogleFonts.urbanist(
               fontWeight: FontWeight.w900,
               fontSize: 16,

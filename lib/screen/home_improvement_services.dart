@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lotuspmc/controller/property_controller.dart';
+import 'package:lotuspmc/controller/hi_controller.dart';
 import 'package:lotuspmc/service/style/color.dart';
 import 'widget/appbar.dart';
 import 'widget/input.dart';
@@ -16,7 +16,7 @@ class HomeImprovementServicesScreen extends StatefulWidget {
 
 class _HomeImprovementServicesScreenState
     extends State<HomeImprovementServicesScreen> {
-  PropertyController propertyController = Get.find();
+  HIController hiController = Get.find();
 
   final TextEditingController detailsController = TextEditingController();
 
@@ -43,7 +43,7 @@ class _HomeImprovementServicesScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyappBar(
-        title: "MR & MRS COLAMARINO'S\nHOME IMPROVEMENT SERVICES",
+        title: "\nHOME IMPROVEMENT SERVICES",
         backgroundColor: successColor,
       ),
       body: SingleChildScrollView(
@@ -51,7 +51,7 @@ class _HomeImprovementServicesScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'LOTUS PMC HAS STRATEGIC ALLIANCES WITH SEVERAL CONSTRUCTION AND HOME IMPROVEMENT COMPANIES. WE CAN SERVE AS YOUR PROJECT MANAGER FOR ANY SERVICES THAT YOU MAY NEED.',
+              'Lotus PMC has strategic alliances with several construction and home improvement companies and can serve as your project manager for any services that you may need. Services include but are not limited to:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: secondary,
@@ -100,7 +100,7 @@ class _HomeImprovementServicesScreenState
             const SizedBox(height: 10),
             Obx(() {
               return BigInputBox(
-                title: propertyController.isHomeImprovementServicesLoading.value
+                title: hiController.isLoadingSend.value
                     ? "Submitting..."
                     : "SUBMIT",
                 controller: detailsController,
@@ -115,7 +115,7 @@ class _HomeImprovementServicesScreenState
                     );
                     return;
                   }
-                  await propertyController.sendHomeImprovementServicesRequest(
+                  await hiController.sendHIRequest(
                     detailsController.text.trim(),
                   );
                   detailsController.clear();
