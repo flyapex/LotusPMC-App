@@ -83,4 +83,21 @@ class ApiServiceSR {
       return null;
     }
   }
+
+  static Future<SrReciveModel?> srGetRoomApi() async {
+    try {
+      final response = await dio.get(
+        '$baseUrl/room/$userID',
+        options: Options(headers: headers),
+      );
+      print(response.data);
+      if (response.statusCode == 200) {
+        return srReciveModelFromJson(jsonEncode(response.data));
+      }
+      return null;
+    } catch (e) {
+      print("Unexpected Error: $e");
+      return null;
+    }
+  }
 }

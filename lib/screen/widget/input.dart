@@ -39,13 +39,13 @@ class _BigInputBoxState extends State<BigInputBox> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'required field*',
-              style: TextStyle(
-                fontSize: 10,
-                color: secondary.withOpacity(0.8),
-              ),
-            ),
+            // Text(
+            //   'required field*',
+            //   style: TextStyle(
+            //     fontSize: 10,
+            //     color: secondary.withOpacity(0.8),
+            //   ),
+            // ),
             ElevatedButton(
               onPressed: () {
                 widget.onSubmit();

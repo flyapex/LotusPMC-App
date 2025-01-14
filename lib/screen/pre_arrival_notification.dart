@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lotuspmc/controller/property_controller.dart';
+import 'package:lotuspmc/screen/pre%20arrival%20notification/input.dart';
 import 'package:lotuspmc/screen/widget/button.dart';
 import 'package:lotuspmc/screen/widget/date_time.dart';
 import 'package:lotuspmc/service/style/color.dart';
@@ -15,7 +15,6 @@ class PreArrivalNotification extends StatefulWidget {
 }
 
 class _PreArrivalNotificationState extends State<PreArrivalNotification> {
-  final PropertyController propertyController = Get.find();
   DateTime? selectedDateTime = DateTime.now();
 
   @override
@@ -53,46 +52,130 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                       .paddingOnly(
                     top: 20,
                   ),
-                  Text(
-                    'CLICK ON FIELD TO ADJUST SAVED PREFERENCES.',
-                    style: TextStyle(
-                      color: secondary,
-                    ),
+                  const Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: CheckmarkWithTitle(
+                          checkMarkTitle: 'OUTDOOR LIGHTS',
+                          checkMarkContent: 'All On',
+                        ),
+                      ),
+                      VerticalDivider(),
+                      Flexible(
+                        flex: 1,
+                        child: CheckmarkWithTitle(
+                          checkMarkTitle: 'INDOOR LIGHTS',
+                          checkMarkContent: 'All On',
+                        ),
+                      )
+                    ],
                   ),
-                  const SubTitleWithBorder(
-                    title: 'TEMPERATURE SETTINGS',
-                    subtitle: '72 FC',
+                  const Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: SingleInput(
+                          title: 'TEMPERATURE SETTINGS',
+                          subtitle: '°F',
+                          hint: '5',
+                        ),
+                      ),
+                      VerticalDivider(),
+                      Flexible(
+                        flex: 1,
+                        child: SingleInput(
+                          title: 'POOL TEMPERATURE',
+                          subtitle: '°F',
+                          hint: '0',
+                        ),
+                      ),
+                    ],
                   ),
-                  const SubTitleWithBorder(
-                    title: 'WINDOW TREATMENTS',
-                    subtitle: 'ALL OPEN',
+                  //dropdown
+                  const DropDown(),
+                  //input fields
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'MUSIC',
+                    checkMarkContent: 'Play Music',
+                    controllers: [
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Music Genre',
+                    ],
+                    height: 70,
                   ),
-                  const SubTitleWithBorder(
-                    title: 'OUTDOOR LIGHTS',
-                    subtitle: 'ALL ON',
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'FLOWERS',
+                    checkMarkContent: 'Order Flowers',
+                    inputBoxCount: 2,
+                    controllers: [
+                      TextEditingController(),
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Type:',
+                      'Location:',
+                    ],
+                    height: 70,
                   ),
-                  const SubTitleWithBorder(
-                    title: 'INDOOR LIGHTS',
-                    subtitle: 'ALL ON',
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'GROCERIES',
+                    checkMarkContent: 'Order Groceries',
+                    height: 90,
+                    controllers: [
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Details:',
+                    ],
                   ),
-                  SubmitButton(
-                    title:
-                        propertyController.isPreArrivalNotificationLoading.value
-                            ? "Submitting..."
-                            : "SUBMIT",
-                    onSubmit: () async {
-                      if (!propertyController
-                          .isPreArrivalNotificationLoading.value) {
-                        // if (selectedDateTime == null) {
-                        //   Get.snackbar("Error", "Please select date and time.");
-                        //   return;
-                        // }
-
-                        propertyController.sendPreArrivalNotification(
-                          selectedDateTime!,
-                        );
-                      }
-                    },
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'ALCOHOL',
+                    checkMarkContent: 'Order Alcohol',
+                    controllers: [
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Details:',
+                    ],
+                  ),
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'HOUSEKEEPING',
+                    checkMarkContent: 'Require Housekeeping',
+                    controllers: [
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Details:',
+                    ],
+                  ),
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'TRANSPORTATION',
+                    checkMarkContent: 'Arrange Transportation',
+                    controllers: [
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Details:',
+                    ],
+                  ),
+                  CheckmarkWithInput(
+                    checkMarkTitle: 'AUTOMOBILES',
+                    checkMarkContent: 'Manage Automobiles',
+                    controllers: [
+                      TextEditingController(),
+                    ],
+                    inputTitles: const [
+                      'Details (Fueled, washed, cleaned, parked in certain location):',
+                    ],
+                  ),
+                  PreArrivalWithInput(
+                    title: 'SPECIAL REQUESTS',
+                    subtitle: 'Add any special requests:',
+                    controllers: TextEditingController(),
                   ),
                   Text(
                     'FOR ANY ADDITIONAL SPECIAL REQUESTS REGARDING YOUR ARRIVAL, PLEASE ENTER THOSE IN THE CONCIERGE TAB.',
@@ -101,12 +184,16 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                       fontWeight: FontWeight.bold,
                     ),
                   ).paddingSymmetric(vertical: 20),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: SubmitButton(
-                      title: 'CONCIERGE TAB',
-                      onSubmit: () {},
-                    ),
+                  // Align(
+                  //   alignment: Alignment.topRight,
+                  //   child: SubmitButton(
+                  //     title: 'CONCIERGE TAB',
+                  //     onSubmit: () {},
+                  //   ),
+                  // ),
+                  SubmitButton(
+                    title: "SUBMIT",
+                    onSubmit: () async {},
                   ),
                 ],
               ).paddingSymmetric(horizontal: 24),
