@@ -3,28 +3,35 @@ import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_sr.dart';
 import 'package:lotuspmc/api/common.dart';
 import 'package:lotuspmc/model/sr/sr_open.dart';
+import 'package:lotuspmc/model/sr/sr_room.dart';
 import 'package:lotuspmc/model/sr/sr_send.dart';
 import 'package:lotuspmc/service/common.dart';
 
 class SRController extends GetxController {
+  final RxString requestType = ''.obs;
   TextEditingController propertyGroundsController = TextEditingController();
   TextEditingController residenceExteriorController = TextEditingController();
   TextEditingController residenceInteriorController = TextEditingController();
+  String roomDesignation = '';
   TextEditingController housekeepingController = TextEditingController();
   TextEditingController stormPreparednessController = TextEditingController();
   TextEditingController additionalDetailsController = TextEditingController();
-
   var isSRLoadingSend = false.obs;
 
-  Future<void> sendSRRequest(String details) async {
+  Future<void> sendSRRequest() async {
     try {
       isSRLoadingSend.value = true;
 
-      final data = ServiceRequestSendModel(
-        details: details,
+      final data = SrSendModel(
+        srType: requestType.value,
+        details: additionalDetailsController.text,
         userId: userID,
-        srType: "Service Request",
-        isAreaIdentified: '',
+        propertyGrounds: propertyGroundsController.text,
+        residenceExterior: residenceExteriorController.text,
+        residenceInterior: residenceInteriorController.text,
+        roomDesignation: roomDesignation,
+        housekeeping: housekeepingController.text,
+        stormPreparedness: stormPreparednessController.text,
       );
 
       final response = await ApiServiceSR.srSendApi(data);
@@ -97,6 +104,26 @@ class SRController extends GetxController {
       showSnackbar("Error", "An error occurred: $e");
     } finally {
       isLoadingDenied.value = false;
+    }
+  }
+
+  // make it for getRoom
+  var roomData = Rxn<RoomModel>();
+  var isLoadingRoom = false.obs;
+
+  void fetchRoom() async {
+    try {
+      isLoadingRoom.value = true;
+      final info = await ApiServiceSR.srGetRoomApi();
+      if (info != null) {
+        roomData.value = info;
+      } else {
+        showSnackbar("Error", "Failed to fetch property information.");
+      }
+    } catch (e) {
+      showSnackbar("Error", "An error occurred: $e");
+    } finally {
+      isLoadingRoom.value = false;
     }
   }
 }

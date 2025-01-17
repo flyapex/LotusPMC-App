@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/controller/sr_controller.dart';
+import 'package:lotuspmc/screen/sr/dropdown.dart';
 import 'package:lotuspmc/screen/widget/input.dart';
 import 'package:lotuspmc/service/common.dart';
 import '../service/style/color.dart';
@@ -9,12 +10,10 @@ import 'widget/text.dart';
 
 class ServiceRequestScreen extends StatelessWidget {
   final SRController srController = Get.put(SRController());
-
-  final RxString requestType = ''.obs;
-
   ServiceRequestScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    srController.fetchRoom();
     return Scaffold(
       appBar: MyappBar(
         title: "\nSERVICE REQUEST",
@@ -35,7 +34,7 @@ class ServiceRequestScreen extends StatelessWidget {
             const SizedBox(height: 20.0),
             const TitleWithBorder(title: 'SUBMIT REQUEST'),
             const Text(
-              'IDENTIFY YOUR REQUEST TYPE',
+              'IDENTIFY YOUR REQUEST TYPE(*)',
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -44,17 +43,19 @@ class ServiceRequestScreen extends StatelessWidget {
             Obx(
               () => Column(
                 children: [
-                  _buildRadioTile("Interior Residence", requestType),
-                  _buildRadioTile("Exterior Structure", requestType),
-                  _buildRadioTile("Exterior Grounds", requestType),
-                  _buildRadioTile("Housekeeping", requestType),
-                  _buildRadioTile("Water Features", requestType),
-                  _buildRadioTile("Storm Preparedness", requestType),
-                  _buildRadioTile("Other", requestType),
+                  _buildRadioTile(
+                      "Interior Residence", srController.requestType),
+                  _buildRadioTile(
+                      "Exterior Structure", srController.requestType),
+                  _buildRadioTile("Exterior Grounds", srController.requestType),
+                  _buildRadioTile("Housekeeping", srController.requestType),
+                  _buildRadioTile("Water Features", srController.requestType),
+                  _buildRadioTile(
+                      "Storm Preparedness", srController.requestType),
+                  _buildRadioTile("Other", srController.requestType),
                 ],
               ),
             ),
-            //Property / Grounds,Residence Exterior,Residence Interior,Housekeeping,Storm Preparedness,Additional Details
             SmallInputBox(
               controller: srController.propertyGroundsController,
               title: 'Property / Grounds',
@@ -73,6 +74,17 @@ class ServiceRequestScreen extends StatelessWidget {
               maxLines: 2,
               onSubmit: () {},
             ).paddingSymmetric(vertical: 20),
+            Obx(() {
+              if (srController.roomData.value == null) {
+                return Container();
+              }
+              return DropDownRoom(
+                items: srController.roomData.value!.data!.toList(),
+                onChanged: (value) {
+                  srController.roomDesignation = value;
+                },
+              );
+            }),
             SmallInputBox(
               controller: srController.housekeepingController,
               title: 'Housekeeping',
@@ -85,26 +97,30 @@ class ServiceRequestScreen extends StatelessWidget {
               maxLines: 2,
               onSubmit: () {},
             ).paddingSymmetric(vertical: 20),
-
             const SizedBox(height: 20.0),
             BigInputBox(
               controller: srController.additionalDetailsController,
               onSubmit: () async {
-                final type = requestType.value;
-                final details =
-                    srController.additionalDetailsController.text.trim();
+                final type = srController.requestType.value;
+                // final details =
+                //     srController.additionalDetailsController.text.trim();
 
-                if (type.isEmpty || details.isEmpty) {
+                if (type.isEmpty) {
                   showSnackbar(
                     "Error",
-                    "Please fill out all required fields.",
+                    "Please Select Service Request Type",
                   );
                   return;
                 }
 
-                await srController.sendSRRequest(type);
+                await srController.sendSRRequest();
                 srController.additionalDetailsController.clear();
-                requestType.value = '';
+                srController.requestType.value = '';
+                srController.propertyGroundsController.clear();
+                srController.residenceExteriorController.clear();
+                srController.residenceInteriorController.clear();
+                srController.housekeepingController.clear();
+                srController.stormPreparednessController.clear();
               },
             ),
             const SizedBox(height: 40),

@@ -1,53 +1,58 @@
 // To parse this JSON data, do
 //
-//     final serviceRequestSendModel = serviceRequestSendModelFromJson(jsonString);
+//     final srSendModel = srSendModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ServiceRequestSendModel serviceRequestSendModelFromJson(String str) =>
-    ServiceRequestSendModel.fromJson(json.decode(str));
+SrSendModel srSendModelFromJson(String str) =>
+    SrSendModel.fromJson(json.decode(str));
 
-String serviceRequestSendModelToJson(ServiceRequestSendModel data) =>
-    json.encode(data.toJson());
+String srSendModelToJson(SrSendModel data) => json.encode(data.toJson());
 
-class ServiceRequestSendModel {
-  String srType;
-  String details;
-  String isAreaIdentified;
-  String userId;
+class SrSendModel {
+  String? srType;
+  String? details;
+  String? userId;
+  String? propertyGrounds;
+  String? residenceExterior;
+  String? residenceInterior;
+  String? roomDesignation;
+  String? housekeeping;
+  String? stormPreparedness;
 
-  ServiceRequestSendModel({
-    required this.srType,
-    required this.details,
-    required this.isAreaIdentified,
-    required this.userId,
+  SrSendModel({
+    this.srType,
+    this.details,
+    this.userId,
+    this.propertyGrounds,
+    this.residenceExterior,
+    this.residenceInterior,
+    this.roomDesignation,
+    this.housekeeping,
+    this.stormPreparedness,
   });
 
-  ServiceRequestSendModel copyWith({
-    String? srType,
-    String? details,
-    String? isAreaIdentified,
-    String? userId,
-  }) =>
-      ServiceRequestSendModel(
-        srType: srType ?? this.srType,
-        details: details ?? this.details,
-        isAreaIdentified: isAreaIdentified ?? this.isAreaIdentified,
-        userId: userId ?? this.userId,
-      );
-
-  factory ServiceRequestSendModel.fromJson(Map<String, dynamic> json) =>
-      ServiceRequestSendModel(
+  factory SrSendModel.fromJson(Map<String, dynamic> json) => SrSendModel(
         srType: json["sr_type"],
         details: json["details"],
-        isAreaIdentified: json["is_area_identified"],
         userId: json["user_id"],
+        propertyGrounds: json["property_grounds"],
+        residenceExterior: json["residence_exterior"],
+        residenceInterior: json["residence_interior"],
+        roomDesignation: json["room_designation"],
+        housekeeping: json["housekeeping"],
+        stormPreparedness: json["storm_preparedness"],
       );
 
   Map<String, dynamic> toJson() => {
         "sr_type": srType,
         "details": details,
-        "is_area_identified": isAreaIdentified,
         "user_id": userId,
+        "property_grounds": propertyGrounds,
+        "residence_exterior": residenceExterior,
+        "residence_interior": residenceInterior,
+        "room_designation": roomDesignation,
+        "housekeeping": housekeeping,
+        "storm_preparedness": stormPreparedness,
       };
 }

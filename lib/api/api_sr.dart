@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:lotuspmc/model/common.dart';
 import 'package:lotuspmc/model/sr/sr_open.dart';
+import 'package:lotuspmc/model/sr/sr_room.dart';
 import 'package:lotuspmc/model/sr/sr_send.dart';
 
 import 'common.dart';
@@ -12,13 +13,13 @@ var baseUrl = 'http://sahedstar.xyz/api/sr';
 
 class ApiServiceSR {
   static Future<ResponseModel?> srSendApi(
-    ServiceRequestSendModel data,
+    SrSendModel data,
   ) async {
     try {
       print('Service Request Data: ${data.toJson()}');
       final response = await dio.post(
-        '$baseUrl/sr/submit',
-        data: serviceRequestSendModelToJson(data),
+        '$baseUrl/submit',
+        data: srSendModelToJson(data),
         options: Options(headers: headers),
       );
       print(response);
@@ -84,15 +85,15 @@ class ApiServiceSR {
     }
   }
 
-  static Future<SrReciveModel?> srGetRoomApi() async {
+  static Future<RoomModel?> srGetRoomApi() async {
     try {
       final response = await dio.get(
-        '$baseUrl/room/$userID',
+        'http://sahedstar.xyz/api/get-room-info/$userID',
         options: Options(headers: headers),
       );
       print(response.data);
       if (response.statusCode == 200) {
-        return srReciveModelFromJson(jsonEncode(response.data));
+        return roomModelFromJson(jsonEncode(response.data));
       }
       return null;
     } catch (e) {

@@ -24,8 +24,10 @@ class PropertyInformationScreen extends StatelessWidget {
           if (propertyController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-          final property = propertyController.propertyInfo.value!.data;
-
+          final property = propertyController.propertyInfo.value?.data;
+          if (property == null) {
+            return const Center(child: Text('No data found'));
+          }
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +35,7 @@ class PropertyInformationScreen extends StatelessWidget {
                 const TitleWithBorder(title: 'HOME OVERVIEW'),
                 SubTitleWithBorder(
                   title: 'ADDRESS:',
-                  subtitle: property!.address ?? 'N/A',
+                  subtitle: property.address ?? 'N/A',
                 ),
                 Row(
                   children: [

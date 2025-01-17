@@ -1,10 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_property.dart';
-import 'package:lotuspmc/api/api_sr.dart';
-import 'package:lotuspmc/model/common.dart';
 import 'package:lotuspmc/model/porperty_info_model.dart';
 import 'package:lotuspmc/model/pre_arrival_notification_model.dart';
-import 'package:lotuspmc/model/sr/sr_send.dart';
 import 'package:lotuspmc/service/common.dart';
 
 import 'db_controller.dart';
@@ -33,35 +30,40 @@ class PropertyController extends GetxController {
     }
   }
 
-  var serviceRequest = Rxn<ResponseModel>();
-  var isServiceRequestLoading = false.obs;
+  // var serviceRequest = Rxn<ResponseModel>();
+  // var isServiceRequestLoading = false.obs;
 
-  Future<void> fetchServiceRequest(String requestType, String details) async {
-    try {
-      isServiceRequestLoading.value = true;
-      final info = await ApiServiceSR.srSendApi(
-        ServiceRequestSendModel(
-          srType: requestType,
-          details: details,
-          isAreaIdentified: "1",
-          userId: userID,
-        ),
-      );
+  // Future<void> fetchServiceRequest(String requestType, String details) async {
+  //   try {
+  //     isServiceRequestLoading.value = true;
+  //     final info = await ApiServiceSR.srSendApi(
+  //       SrSendModel(
+  //         srType: requestType,
+  //         details: details,
+  //         userId: userID,
+  //         propertyGrounds: pro,
+  //         residenceExterior: '',
+  //         residenceInterior: '',
+  //         roomDesignation: '',
+  //         housekeeping: '',
+  //         stormPreparedness: '',
+  //       ),
+  //     );
 
-      if (info != null) {
-        serviceRequest.value = info;
-        showSnackbar("Success", info.message);
-        await Future.delayed(const Duration(seconds: 1));
-        Get.back(closeOverlays: true);
-      } else {
-        showSnackbar("Error", "Failed to submit service request.");
-      }
-    } catch (e) {
-      showSnackbar("Error", "An error occurred: $e");
-    } finally {
-      isServiceRequestLoading.value = false;
-    }
-  }
+  //     if (info != null) {
+  //       serviceRequest.value = info;
+  //       showSnackbar("Success", info.message);
+  //       await Future.delayed(const Duration(seconds: 1));
+  //       Get.back(closeOverlays: true);
+  //     } else {
+  //       showSnackbar("Error", "Failed to submit service request.");
+  //     }
+  //   } catch (e) {
+  //     showSnackbar("Error", "An error occurred: $e");
+  //   } finally {
+  //     isServiceRequestLoading.value = false;
+  //   }
+  // }
 
   var isPreArrivalNotificationLoading = false.obs;
 

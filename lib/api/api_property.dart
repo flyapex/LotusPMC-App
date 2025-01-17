@@ -29,9 +29,9 @@ class ApiServiceProperty {
         '$baseUrl/get-tenant-property/$propertyId',
         options: Options(headers: headers),
       );
-      // print('-------------------------------');
-      // print(response.data);
-      // print('-------------------------------');
+      print('-------------------------------');
+      print(response.data);
+      print('-------------------------------');
 
       if (response.statusCode == 200) {
         return propertyInformationResponseFromJson(jsonEncode(response.data));
