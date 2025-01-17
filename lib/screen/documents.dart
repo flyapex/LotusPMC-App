@@ -3,13 +3,16 @@ import 'package:get/get.dart';
 import 'package:lotuspmc/screen/documents/cr/open.dart';
 import 'package:lotuspmc/screen/documents/sr/complete.dart';
 import 'package:lotuspmc/screen/documents/sr/denied.dart';
-import 'package:lotuspmc/screen/documents/walk_thru_reposts.dart';
+import 'package:lotuspmc/screen/documents/wt/walk_thru_reposts.dart';
 import 'package:lotuspmc/service/style/color.dart';
 import 'documents/cr/complete.dart';
 import 'documents/cr/denied.dart';
 import 'documents/hi/complete.dart';
 import 'documents/hi/open.dart';
 import 'documents/sr/open.dart';
+import 'documents/wt/complete.dart';
+import 'documents/wt/denied.dart';
+import 'documents/wt/open.dart';
 import 'widget/appbar.dart';
 import 'widget/button.dart';
 import 'widget/text.dart';
@@ -45,21 +48,21 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
               text: 'OPEN ITEMS',
               color: lightBackground,
               onTap: () {
-                // Get.to(() => const DocumentsScreen());
+                Get.to(() => const WTOpenRequestScreen());
               },
             ),
             ActionButton(
               text: 'COMPLETED ITEMS',
               color: lightBackground,
               onTap: () {
-                Get.to(() => const DocumentsScreen());
+                Get.to(() => const WTCompletedRequestScreen());
               },
             ),
             ActionButton(
               text: 'CLIENT DENIED',
               color: lightBackground,
               onTap: () {
-                // Get.to(() => const DocumentsScreen());
+                Get.to(() => const WTDeniedRequestScreen());
               },
             ),
             const TitleWithBorder(title: 'SERVICE REQUEST STATUS')

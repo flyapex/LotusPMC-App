@@ -6,6 +6,7 @@ import 'package:lotuspmc/controller/dep_controller.dart';
 import 'package:lotuspmc/controller/hi_controller.dart';
 import 'package:lotuspmc/controller/property_controller.dart';
 import 'package:lotuspmc/controller/sr_controller.dart';
+import 'package:lotuspmc/controller/wt_controller.dart';
 import 'package:lotuspmc/screen/property_info.dart';
 import 'package:lotuspmc/screen/service_request.dart';
 import 'package:lotuspmc/service/style/color.dart';
@@ -37,6 +38,8 @@ class HomeScreen extends StatelessWidget {
     final HIController hiController = Get.put(HIController());
     // ignore: unused_local_variable
     final SRController srController = Get.put(SRController());
+    // ignore: unused_local_variable
+    final WTController wtController = Get.put(WTController());
 
     return Scaffold(
       body: SingleChildScrollView(

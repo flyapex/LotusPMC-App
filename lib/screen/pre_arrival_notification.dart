@@ -24,181 +24,176 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
           title: "\nDOCUMENTS",
           backgroundColor: mutedText,
         ),
-        body: Obx(
-          () {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TitleWithBorder(title: 'WELCOME HOME'),
+              Text(
+                'PLEASE LET US KNOW WHEN YOU WILL BE ARRIVING AT YOUR HOME AND HOW WE MAY BE ABLE TO ASSIST IN GETTING EVERYTHING READY FOR YOUR ARRIVAL.',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: secondary,
+                ),
+              ).paddingSymmetric(vertical: 20),
+              CustomDateTimePicker(
+                title: "ARRIVAL DATE",
+                subtitle: "EST'D ARRIVAL TIME",
+                initialDate: DateTime.now(),
+                onDateTimeChanged: (DateTime dateTime) {
+                  // Handle the selected date-time here
+                  debugPrint('Selected DateTime: $dateTime');
+                  selectedDateTime = dateTime;
+                },
+              ),
+              const TitleWithBorder(title: 'ARRIVAL PREFERENCES').paddingOnly(
+                top: 20,
+              ),
+              const Row(
                 children: [
-                  const TitleWithBorder(title: 'WELCOME HOME'),
-                  Text(
-                    'PLEASE LET US KNOW WHEN YOU WILL BE ARRIVING AT YOUR HOME AND HOW WE MAY BE ABLE TO ASSIST IN GETTING EVERYTHING READY FOR YOUR ARRIVAL.',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: secondary,
+                  Flexible(
+                    flex: 1,
+                    child: CheckmarkWithTitle(
+                      checkMarkTitle: 'OUTDOOR LIGHTS',
+                      checkMarkContent: 'All On',
                     ),
-                  ).paddingSymmetric(vertical: 20),
-                  CustomDateTimePicker(
-                    title: "ARRIVAL DATE",
-                    subtitle: "EST'D ARRIVAL TIME",
-                    initialDate: DateTime.now(),
-                    onDateTimeChanged: (DateTime dateTime) {
-                      // Handle the selected date-time here
-                      debugPrint('Selected DateTime: $dateTime');
-                      selectedDateTime = dateTime;
-                    },
                   ),
-                  const TitleWithBorder(title: 'ARRIVAL PREFERENCES')
-                      .paddingOnly(
-                    top: 20,
-                  ),
-                  const Row(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: CheckmarkWithTitle(
-                          checkMarkTitle: 'OUTDOOR LIGHTS',
-                          checkMarkContent: 'All On',
-                        ),
-                      ),
-                      VerticalDivider(),
-                      Flexible(
-                        flex: 1,
-                        child: CheckmarkWithTitle(
-                          checkMarkTitle: 'INDOOR LIGHTS',
-                          checkMarkContent: 'All On',
-                        ),
-                      )
-                    ],
-                  ),
-                  const Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: SingleInput(
-                          title: 'TEMPERATURE SETTINGS',
-                          subtitle: '°F',
-                          hint: '5',
-                        ),
-                      ),
-                      VerticalDivider(),
-                      Flexible(
-                        flex: 1,
-                        child: SingleInput(
-                          title: 'POOL TEMPERATURE',
-                          subtitle: '°F',
-                          hint: '0',
-                        ),
-                      ),
-                    ],
-                  ),
-                  //dropdown
-                  const DropDown(),
-                  //input fields
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'MUSIC',
-                    checkMarkContent: 'Play Music',
-                    controllers: [
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Music Genre',
-                    ],
-                    height: 70,
-                  ),
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'FLOWERS',
-                    checkMarkContent: 'Order Flowers',
-                    inputBoxCount: 2,
-                    controllers: [
-                      TextEditingController(),
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Type:',
-                      'Location:',
-                    ],
-                    height: 70,
-                  ),
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'GROCERIES',
-                    checkMarkContent: 'Order Groceries',
-                    height: 90,
-                    controllers: [
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Details:',
-                    ],
-                  ),
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'ALCOHOL',
-                    checkMarkContent: 'Order Alcohol',
-                    controllers: [
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Details:',
-                    ],
-                  ),
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'HOUSEKEEPING',
-                    checkMarkContent: 'Require Housekeeping',
-                    controllers: [
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Details:',
-                    ],
-                  ),
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'TRANSPORTATION',
-                    checkMarkContent: 'Arrange Transportation',
-                    controllers: [
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Details:',
-                    ],
-                  ),
-                  CheckmarkWithInput(
-                    checkMarkTitle: 'AUTOMOBILES',
-                    checkMarkContent: 'Manage Automobiles',
-                    controllers: [
-                      TextEditingController(),
-                    ],
-                    inputTitles: const [
-                      'Details (Fueled, washed, cleaned, parked in certain location):',
-                    ],
-                  ),
-                  PreArrivalWithInput(
-                    title: 'SPECIAL REQUESTS',
-                    subtitle: 'Add any special requests:',
-                    controllers: TextEditingController(),
-                  ),
-                  Text(
-                    'FOR ANY ADDITIONAL SPECIAL REQUESTS REGARDING YOUR ARRIVAL, PLEASE ENTER THOSE IN THE CONCIERGE TAB.',
-                    style: TextStyle(
-                      color: secondary,
-                      fontWeight: FontWeight.bold,
+                  VerticalDivider(),
+                  Flexible(
+                    flex: 1,
+                    child: CheckmarkWithTitle(
+                      checkMarkTitle: 'INDOOR LIGHTS',
+                      checkMarkContent: 'All On',
                     ),
-                  ).paddingSymmetric(vertical: 20),
-                  // Align(
-                  //   alignment: Alignment.topRight,
-                  //   child: SubmitButton(
-                  //     title: 'CONCIERGE TAB',
-                  //     onSubmit: () {},
-                  //   ),
-                  // ),
-                  SubmitButton(
-                    title: "SUBMIT",
-                    onSubmit: () async {},
+                  )
+                ],
+              ),
+              const Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: SingleInput(
+                      title: 'TEMPERATURE SETTINGS',
+                      subtitle: '°F',
+                      hint: '5',
+                    ),
+                  ),
+                  VerticalDivider(),
+                  Flexible(
+                    flex: 1,
+                    child: SingleInput(
+                      title: 'POOL TEMPERATURE',
+                      subtitle: '°F',
+                      hint: '0',
+                    ),
                   ),
                 ],
-              ).paddingSymmetric(horizontal: 24),
-            );
-          },
+              ),
+              //dropdown
+              const DropDown(),
+              //input fields
+              CheckmarkWithInput(
+                checkMarkTitle: 'MUSIC',
+                checkMarkContent: 'Play Music',
+                controllers: [
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Music Genre',
+                ],
+                height: 70,
+              ),
+              CheckmarkWithInput(
+                checkMarkTitle: 'FLOWERS',
+                checkMarkContent: 'Order Flowers',
+                inputBoxCount: 2,
+                controllers: [
+                  TextEditingController(),
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Type:',
+                  'Location:',
+                ],
+                height: 70,
+              ),
+              CheckmarkWithInput(
+                checkMarkTitle: 'GROCERIES',
+                checkMarkContent: 'Order Groceries',
+                height: 90,
+                controllers: [
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Details:',
+                ],
+              ),
+              CheckmarkWithInput(
+                checkMarkTitle: 'ALCOHOL',
+                checkMarkContent: 'Order Alcohol',
+                controllers: [
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Details:',
+                ],
+              ),
+              CheckmarkWithInput(
+                checkMarkTitle: 'HOUSEKEEPING',
+                checkMarkContent: 'Require Housekeeping',
+                controllers: [
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Details:',
+                ],
+              ),
+              CheckmarkWithInput(
+                checkMarkTitle: 'TRANSPORTATION',
+                checkMarkContent: 'Arrange Transportation',
+                controllers: [
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Details:',
+                ],
+              ),
+              CheckmarkWithInput(
+                checkMarkTitle: 'AUTOMOBILES',
+                checkMarkContent: 'Manage Automobiles',
+                controllers: [
+                  TextEditingController(),
+                ],
+                inputTitles: const [
+                  'Details (Fueled, washed, cleaned, parked in certain location):',
+                ],
+              ),
+              PreArrivalWithInput(
+                title: 'SPECIAL REQUESTS',
+                subtitle: 'Add any special requests:',
+                controllers: TextEditingController(),
+              ),
+              Text(
+                'FOR ANY ADDITIONAL SPECIAL REQUESTS REGARDING YOUR ARRIVAL, PLEASE ENTER THOSE IN THE CONCIERGE TAB.',
+                style: TextStyle(
+                  color: secondary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ).paddingSymmetric(vertical: 20),
+              // Align(
+              //   alignment: Alignment.topRight,
+              //   child: SubmitButton(
+              //     title: 'CONCIERGE TAB',
+              //     onSubmit: () {},
+              //   ),
+              // ),
+              SubmitButton(
+                title: "SUBMIT",
+                onSubmit: () async {},
+              ),
+            ],
+          ).paddingSymmetric(horizontal: 24),
         ));
   }
 }
