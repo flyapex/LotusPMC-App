@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:lotuspmc/controller/db_controller.dart';
-import 'package:lotuspmc/model/auth_model.dart';
+import 'package:lotuspmc/model/auth/auth_model.dart';
+import 'package:lotuspmc/model/auth/singup.dart';
+import 'package:lotuspmc/model/common.dart';
 
 final dio = Dio();
 
@@ -37,27 +39,22 @@ class ApiServiceLogin {
     }
   }
 
-  static Future<LoginResponseModel?> manualRegisterApi(
-    RegisterModel data,
+  static Future<ResponseModel?> manualRegisterApi(
+    SingUpModel data,
   ) async {
     try {
       final response = await dio.post(
         '$baseUrl/register',
-        data: registerModelToJson(data),
+        data: singUpModelToJson(data),
       );
       print(response.data);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        print('----------xxx-------------');
-
-        return loginResponseModelFromJson(jsonEncode(response.data));
+        return responseModelFromJson(jsonEncode(response.data));
       } else {
-        print('----------yyy-------------');
         return null;
       }
     } catch (e) {
-      print('------------zzz-----------');
-
       print("Unexpected Error: $e");
       return null;
     }

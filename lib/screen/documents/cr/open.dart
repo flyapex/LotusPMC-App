@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/controller/cr_controller.dart';
 import 'package:lotuspmc/screen/widget/appbar.dart';
+import 'package:lotuspmc/service/common.dart';
 import 'package:lotuspmc/service/style/color.dart';
 
 class CROpenRequestScreen extends StatelessWidget {
@@ -17,30 +18,35 @@ class CROpenRequestScreen extends StatelessWidget {
         title: "\nOPEN ITEMS",
         backgroundColor: highlightColor,
       ),
-      body: Obx(() => crController.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text("Submission Date")),
-                  DataColumn(label: Text("CR Description")),
-                  DataColumn(label: Text("Approval Status")),
-                  DataColumn(label: Text("Repair Date")),
-                ],
-                rows: crController.crOpenData.value!.data!.crInfos!
-                    .map(
-                      (info) => DataRow(cells: [
-                        DataCell(
-                            Text(info.submitDate.toString().substring(0, 11))),
-                        DataCell(Text(info.description ?? 'N/A')),
-                        DataCell(Text(info.clientApprovedRepair ?? 'N/A')),
-                        DataCell(Text(info.completedDate ?? 'N/A')),
-                      ]),
-                    )
-                    .toList(),
-              ),
-            )),
+      body: Obx(() {
+        if (crController.crOpenData.value == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (crController.crOpenData.value!.data!.crInfos!.isEmpty) {
+          return const Center(child: Text("No data found"));
+        }
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columns: const [
+              DataColumn(label: Text("Submission Date")),
+              DataColumn(label: Text("CR Description")),
+              DataColumn(label: Text("Approval Status")),
+              DataColumn(label: Text("Repair Date")),
+            ],
+            rows: crController.crOpenData.value!.data!.crInfos!
+                .map(
+                  (info) => DataRow(cells: [
+                    DataCell(Text(formatDateTime(info.submitDate))),
+                    DataCell(Text(info.description ?? 'N/A')),
+                    const DataCell(Text('N/A')),
+                    const DataCell(Text('N/A')),
+                  ]),
+                )
+                .toList(),
+          ),
+        );
+      }),
     );
   }
 }

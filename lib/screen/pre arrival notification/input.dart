@@ -94,7 +94,12 @@ class _CheckmarkWithInputState extends State<CheckmarkWithInput> {
 }
 
 class DropDown extends StatefulWidget {
-  const DropDown({super.key});
+  final Function(String?) onChanged;
+
+  const DropDown({
+    super.key,
+    required this.onChanged,
+  });
 
   @override
   State<DropDown> createState() => _DropDownState();
@@ -134,6 +139,7 @@ class _DropDownState extends State<DropDown> {
             onChanged: (String? newValue) {
               setState(() {
                 selectedValue = newValue;
+                widget.onChanged(selectedValue);
               });
             },
           ),
@@ -202,8 +208,14 @@ class SingleInput extends StatelessWidget {
   final String title;
   final String subtitle;
   final String? hint;
-  const SingleInput(
-      {super.key, required this.title, required this.subtitle, this.hint});
+  final TextEditingController controller;
+  const SingleInput({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    this.hint,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +233,7 @@ class SingleInput extends StatelessWidget {
         ).paddingSymmetric(vertical: 8),
         TextFormField(
           keyboardType: TextInputType.number,
-          controller: TextEditingController(text: hint),
+          controller: controller,
           decoration: InputDecoration(
             labelText: '',
             border: const OutlineInputBorder(),
@@ -236,11 +248,13 @@ class SingleInput extends StatelessWidget {
 class CheckmarkWithTitle extends StatefulWidget {
   final String checkMarkTitle;
   final String checkMarkContent;
+  final Function(bool isChecked) onTap;
 
   const CheckmarkWithTitle({
     super.key,
     required this.checkMarkTitle,
     required this.checkMarkContent,
+    required this.onTap,
   });
 
   @override
@@ -248,7 +262,7 @@ class CheckmarkWithTitle extends StatefulWidget {
 }
 
 class _CheckmarkWithTitleState extends State<CheckmarkWithTitle> {
-  bool isChecked = false;
+  bool isChecked = false; // Define a local state to track the checkbox status
 
   @override
   Widget build(BuildContext context) {
@@ -269,12 +283,13 @@ class _CheckmarkWithTitleState extends State<CheckmarkWithTitle> {
               width: 24.0,
               child: Checkbox(
                 value: isChecked,
-                fillColor:
-                    WidgetStateProperty.all(isChecked ? primary : Colors.white),
-                side: BorderSide(color: secondary),
+                fillColor: WidgetStateProperty.resolveWith(
+                    (states) => isChecked ? Colors.blue : Colors.white),
+                side: const BorderSide(color: Colors.grey),
                 onChanged: (bool? newValue) {
                   setState(() {
                     isChecked = newValue ?? false;
+                    widget.onTap(isChecked);
                   });
                 },
               ),

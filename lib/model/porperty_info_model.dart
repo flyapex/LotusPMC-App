@@ -54,7 +54,7 @@ class Data {
   String? preferredContactMethod;
   String? managerId;
   String? tenantIds;
-  dynamic contactedIds;
+  String? contactedIds;
   DateTime? createdAt;
   DateTime? updatedAt;
   List<Floor>? floors;

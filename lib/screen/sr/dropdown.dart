@@ -35,9 +35,11 @@ class _DropDownRoomState extends State<DropDownRoom> {
             isExpanded: true,
             hint: const Text('SELECT WINDOW BLIND'),
             underline: const SizedBox(),
-            items: widget.items.map((String value) {
+            items: widget.items.asMap().entries.map((entry) {
+              final int index = entry.key;
+              final String value = entry.value;
               return DropdownMenuItem<String>(
-                value: value,
+                value: "$value-$index",
                 child: Text(value),
               );
             }).toList(),
@@ -45,7 +47,8 @@ class _DropDownRoomState extends State<DropDownRoom> {
               setState(() {
                 selectedValue = newValue;
               });
-              widget.onChanged(newValue!);
+              // Extract original value by splitting the combined string
+              widget.onChanged(newValue!.split('-').first);
             },
           ),
         ),

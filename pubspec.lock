@@ -150,6 +150,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -224,6 +229,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.2"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   json_annotation:
     dependency: transitive
     description:
@@ -424,6 +437,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  pick_country_picker:
+    dependency: "direct main"
+    description:
+      name: pick_country_picker
+      sha256: "53964e5419681042441f9daeed98ac70b39f3ed3964dadb49cd7c7f409ab4d6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   platform:
     dependency: transitive
     description:

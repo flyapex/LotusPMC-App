@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/controller/db_controller.dart';
 import 'package:lotuspmc/controller/user_controller.dart';
-import 'package:lotuspmc/model/auth_model.dart';
+import 'package:lotuspmc/model/auth/auth_model.dart';
 import 'package:lotuspmc/screen/home.dart';
-import '../service/style/color.dart';
+import '../../service/style/color.dart';
 import 'signup.dart';
 
 class LoginScreen extends StatefulWidget {

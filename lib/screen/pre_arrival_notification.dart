@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lotuspmc/controller/pan_controller.dart';
 import 'package:lotuspmc/screen/pre%20arrival%20notification/input.dart';
 import 'package:lotuspmc/screen/widget/button.dart';
 import 'package:lotuspmc/screen/widget/date_time.dart';
@@ -15,7 +16,7 @@ class PreArrivalNotification extends StatefulWidget {
 }
 
 class _PreArrivalNotificationState extends State<PreArrivalNotification> {
-  DateTime? selectedDateTime = DateTime.now();
+  PANController panController = Get.put(PANController());
 
   @override
   Widget build(BuildContext context) {
@@ -43,61 +44,75 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 onDateTimeChanged: (DateTime dateTime) {
                   // Handle the selected date-time here
                   debugPrint('Selected DateTime: $dateTime');
-                  selectedDateTime = dateTime;
+                  // selectedDateTime = dateTime;
+                  panController.selectedDateTime.value = dateTime;
                 },
               ),
               const TitleWithBorder(title: 'ARRIVAL PREFERENCES').paddingOnly(
                 top: 20,
               ),
-              const Row(
+              Row(
                 children: [
                   Flexible(
                     flex: 1,
                     child: CheckmarkWithTitle(
                       checkMarkTitle: 'OUTDOOR LIGHTS',
                       checkMarkContent: 'All On',
+                      onTap: (isChecked) {
+                        print(isChecked);
+                        panController.outdoorLightsController = isChecked;
+                      },
                     ),
                   ),
-                  VerticalDivider(),
+                  const VerticalDivider(),
                   Flexible(
                     flex: 1,
                     child: CheckmarkWithTitle(
                       checkMarkTitle: 'INDOOR LIGHTS',
                       checkMarkContent: 'All On',
+                      onTap: (isChecked) {
+                        print(isChecked);
+                        panController.indoorLightsController = isChecked;
+                      },
                     ),
                   )
                 ],
               ),
-              const Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Row(
                 children: [
                   Flexible(
                     flex: 1,
                     child: SingleInput(
                       title: 'TEMPERATURE SETTINGS',
                       subtitle: '°F',
-                      hint: '5',
+                      hint: '72',
+                      controller: panController.temperatureController,
                     ),
                   ),
-                  VerticalDivider(),
+                  const VerticalDivider(),
                   Flexible(
                     flex: 1,
                     child: SingleInput(
                       title: 'POOL TEMPERATURE',
                       subtitle: '°F',
                       hint: '0',
+                      controller: panController.poolTemperatureController,
                     ),
                   ),
                 ],
               ),
               //dropdown
-              const DropDown(),
+              DropDown(
+                onChanged: (p0) {
+                  panController.windowBlindsController = p0!;
+                },
+              ),
               //input fields
               CheckmarkWithInput(
                 checkMarkTitle: 'MUSIC',
                 checkMarkContent: 'Play Music',
                 controllers: [
-                  TextEditingController(),
+                  panController.musicController,
                 ],
                 inputTitles: const [
                   'Music Genre',
@@ -109,8 +124,8 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 checkMarkContent: 'Order Flowers',
                 inputBoxCount: 2,
                 controllers: [
-                  TextEditingController(),
-                  TextEditingController(),
+                  panController.flowerTypeController,
+                  panController.flowerLocationController,
                 ],
                 inputTitles: const [
                   'Type:',
@@ -123,7 +138,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 checkMarkContent: 'Order Groceries',
                 height: 90,
                 controllers: [
-                  TextEditingController(),
+                  panController.groceriesController,
                 ],
                 inputTitles: const [
                   'Details:',
@@ -133,7 +148,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 checkMarkTitle: 'ALCOHOL',
                 checkMarkContent: 'Order Alcohol',
                 controllers: [
-                  TextEditingController(),
+                  panController.alcoholController,
                 ],
                 inputTitles: const [
                   'Details:',
@@ -143,7 +158,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 checkMarkTitle: 'HOUSEKEEPING',
                 checkMarkContent: 'Require Housekeeping',
                 controllers: [
-                  TextEditingController(),
+                  panController.housekeepingController,
                 ],
                 inputTitles: const [
                   'Details:',
@@ -153,7 +168,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 checkMarkTitle: 'TRANSPORTATION',
                 checkMarkContent: 'Arrange Transportation',
                 controllers: [
-                  TextEditingController(),
+                  panController.trnsportationController,
                 ],
                 inputTitles: const [
                   'Details:',
@@ -163,7 +178,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 checkMarkTitle: 'AUTOMOBILES',
                 checkMarkContent: 'Manage Automobiles',
                 controllers: [
-                  TextEditingController(),
+                  panController.automobileController,
                 ],
                 inputTitles: const [
                   'Details (Fueled, washed, cleaned, parked in certain location):',
@@ -172,7 +187,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
               PreArrivalWithInput(
                 title: 'SPECIAL REQUESTS',
                 subtitle: 'Add any special requests:',
-                controllers: TextEditingController(),
+                controllers: panController.specialRequestsController,
               ),
               Text(
                 'FOR ANY ADDITIONAL SPECIAL REQUESTS REGARDING YOUR ARRIVAL, PLEASE ENTER THOSE IN THE CONCIERGE TAB.',
@@ -190,7 +205,9 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
               // ),
               SubmitButton(
                 title: "SUBMIT",
-                onSubmit: () async {},
+                onSubmit: () async {
+                  panController.sendPreArivalRequest();
+                },
               ),
             ],
           ).paddingSymmetric(horizontal: 24),

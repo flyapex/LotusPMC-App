@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_auth.dart';
-import 'package:lotuspmc/model/auth_model.dart';
+import 'package:lotuspmc/model/auth/auth_model.dart';
+import 'package:lotuspmc/model/auth/singup.dart';
+import 'package:lotuspmc/model/common.dart';
 import 'package:lotuspmc/service/common.dart';
 
 class UserController extends GetxController {
   TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController address1Controller = TextEditingController();
   TextEditingController cityController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController zipCodeController = TextEditingController();
+  TextEditingController sizeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
 
   Future<LoginResponseModel?> manualLogin() async {
     try {
@@ -47,19 +53,27 @@ class UserController extends GetxController {
     }
   }
 
-  Future<LoginResponseModel?> manualRegister() async {
+  var selectedLengthOfTerm = ''.obs;
+
+  void selectDuration(String duration) {
+    selectedLengthOfTerm.value = duration;
+  }
+
+  Future<ResponseModel?> manualRegister() async {
     try {
-      LoginResponseModel? response = await ApiServiceLogin.manualRegisterApi(
-        RegisterModel(
+      ResponseModel? response = await ApiServiceLogin.manualRegisterApi(
+        SingUpModel(
           fName: firstNameController.text,
           lName: lastNameController.text,
-          address: addressController.text,
-          city: cityController.text,
           email: emailController.text,
-          phoneNumber: phoneNumberController.text,
-          password: passwordController.text,
-          cPassword: confirmPasswordController.text,
-          note: noteController.text,
+          phone: phoneController.text,
+          address: addressController.text,
+          addressLine1: address1Controller.text,
+          city: cityController.text,
+          state: stateController.text,
+          zipCode: zipCodeController.text,
+          sizeOfHome: sizeController.text,
+          message: messageController.text,
         ),
       );
       print(response);

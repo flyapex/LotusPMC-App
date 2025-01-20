@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/controller/wt_controller.dart';
+import 'package:lotuspmc/service/common.dart';
 import 'package:lotuspmc/service/style/color.dart';
 import '../../widget/appbar.dart';
 import '../../widget/button.dart';
@@ -34,6 +35,9 @@ class WalkThruReposts extends StatelessWidget {
               if (wtController.isLoadingAll.value) {
                 return const Center(child: CircularProgressIndicator());
               }
+              if (wtController.wtAllData.value!.data!.reports!.isEmpty) {
+                return const Center(child: Text('No data found'));
+              }
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -43,7 +47,7 @@ class WalkThruReposts extends StatelessWidget {
                   return ListTile(
                     leading: const Icon(Icons.calendar_today),
                     title: Text(
-                      dates[index].createdAt.toString().substring(0, 11),
+                      formatDateTime(dates[index].createdAt),
                     ),
                     onTap: () {
                       print('Selected: ${dates[index]}');
