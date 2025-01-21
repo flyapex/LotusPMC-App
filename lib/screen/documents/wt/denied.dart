@@ -19,13 +19,12 @@ class WTDeniedRequestScreen extends StatelessWidget {
         backgroundColor: highlightColor,
       ),
       body: Obx(() {
-        //'No Data Found',
         if (wtController.wtDeniedData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
 
         if (wtController.wtDeniedData.value!.data!.reports!.isEmpty) {
-          return const Center(child: Text('No Data Found'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

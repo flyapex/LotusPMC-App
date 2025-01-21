@@ -209,6 +209,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                   panController.sendPreArivalRequest();
                 },
               ),
+              const SizedBox(height: 40),
             ],
           ).paddingSymmetric(horizontal: 24),
         ));

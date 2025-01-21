@@ -6,7 +6,9 @@ import 'package:lotuspmc/controller/dep_controller.dart';
 import 'package:lotuspmc/controller/hi_controller.dart';
 import 'package:lotuspmc/controller/property_controller.dart';
 import 'package:lotuspmc/controller/sr_controller.dart';
+import 'package:lotuspmc/controller/user_controller.dart';
 import 'package:lotuspmc/controller/wt_controller.dart';
+import 'package:lotuspmc/screen/login/signup.dart';
 import 'package:lotuspmc/screen/property_info.dart';
 import 'package:lotuspmc/screen/service_request.dart';
 import 'package:lotuspmc/service/style/color.dart';
@@ -40,7 +42,8 @@ class HomeScreen extends StatelessWidget {
     final SRController srController = Get.put(SRController());
     // ignore: unused_local_variable
     final WTController wtController = Get.put(WTController());
-
+    // ignore: unused_local_variable
+    final UserController userController = Get.put(UserController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -118,7 +121,9 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(() => const SignUpScreen());
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 side: const BorderSide(color: Colors.grey),

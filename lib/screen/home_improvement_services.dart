@@ -121,7 +121,8 @@ class _HomeImprovementServicesScreenState
                   detailsController.clear();
                 },
               );
-            })
+            }),
+            const SizedBox(height: 40),
           ],
         ).paddingSymmetric(horizontal: 24),
       ),

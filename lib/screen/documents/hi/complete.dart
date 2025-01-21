@@ -20,10 +20,10 @@ class HiCompleteProjectScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (hiController.hiCompleteProjectData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
         if (hiController.hiCompleteProjectData.value!.data!.piInfos!.isEmpty) {
-          return const Center(child: Text('No data found'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

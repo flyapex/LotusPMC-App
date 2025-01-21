@@ -20,11 +20,11 @@ class SROpenRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (srController.srOpenData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
 
         if (srController.srOpenData.value!.data!.srInfos!.isEmpty) {
-          return const Center(child: Text('No data found'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

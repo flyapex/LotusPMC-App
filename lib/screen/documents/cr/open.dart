@@ -20,10 +20,10 @@ class CROpenRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (crController.crOpenData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
         if (crController.crOpenData.value!.data!.crInfos!.isEmpty) {
-          return const Center(child: Text("No data found"));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

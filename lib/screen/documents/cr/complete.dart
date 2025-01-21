@@ -20,10 +20,10 @@ class CRCompletedRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (crController.crCompletedData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
         if (crController.crCompletedData.value!.data!.crInfos!.isEmpty) {
-          return const Center(child: Text("No data found"));
+          return noData();
         }
 
         return SingleChildScrollView(

@@ -20,9 +20,9 @@ class SRDeniedRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (srController.srDeniedData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         } else if (srController.srDeniedData.value!.data!.srInfos!.isEmpty) {
-          return const Center(child: Text('No Data'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

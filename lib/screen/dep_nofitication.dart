@@ -77,7 +77,8 @@ class DepartureNofiticationScreen extends StatelessWidget {
                     }
                   },
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
+
                 // SubmitButton(title: 'SEND US A MESSAGE', onSubmit: () {}),
                 // SubmitButton(title: 'ENTER A SERVICE REQUEST', onSubmit: () {}),
               ],

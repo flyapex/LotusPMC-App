@@ -110,7 +110,8 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
                   },
                 );
               },
-            )
+            ),
+            const SizedBox(height: 40),
           ],
         ).paddingSymmetric(horizontal: 24),
       ),

@@ -20,9 +20,9 @@ class CRDeniedRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (crController.isLoadingDenied.value) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         } else if (crController.crDeniedData.value!.data!.crInfos!.isEmpty) {
-          return const Center(child: Text('No denied items'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

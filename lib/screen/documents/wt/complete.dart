@@ -20,17 +20,13 @@ class WTCompletedRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (wtController.isLoadingCompleted.value) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
 
         final reports = wtController.wtCompletedData.value?.data?.reports;
 
         if (reports == null || reports.isEmpty) {
-          return const Center(
-            child: Text(
-              'No Data Found',
-            ),
-          );
+          return noData();
         }
 
         return SingleChildScrollView(

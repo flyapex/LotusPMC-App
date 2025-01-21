@@ -126,7 +126,7 @@ class ServiceRequestScreen extends StatelessWidget {
             const SizedBox(height: 40),
             Obx(
               () => srController.isSRLoadingSend.value
-                  ? const Center(child: CircularProgressIndicator())
+                  ? loadingData()
                   : Container(),
             ),
           ],

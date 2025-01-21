@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+import 'package:lotuspmc/service/style/color.dart';
 
 void showSnackbar(String title, String message) {
   Get.snackbar(
@@ -35,4 +37,31 @@ String formatDateTime(dateTime) {
   } catch (e) {
     return '';
   }
+}
+
+Widget noData() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          child: Lottie.asset('assets/lottie/empty.json'),
+        ),
+        Text(
+          'No Data Found',
+          style: TextStyle(fontSize: 16, color: secondary),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget loadingData() {
+  return Center(
+    child: CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(
+        primary,
+      ),
+    ),
+  );
 }

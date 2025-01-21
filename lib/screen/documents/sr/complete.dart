@@ -20,12 +20,11 @@ class SRCompletedRequestScreen extends StatelessWidget {
         backgroundColor: highlightColor,
       ),
       body: Obx(() {
-        //'No Data Found',
         if (srController.srCompletedData.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
         if (srController.srCompletedData.value!.data!.srInfos!.isEmpty) {
-          return const Center(child: Text('No Data Found'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

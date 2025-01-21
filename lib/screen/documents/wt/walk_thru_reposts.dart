@@ -33,10 +33,10 @@ class WalkThruReposts extends StatelessWidget {
             ).paddingOnly(bottom: 16),
             Obx(() {
               if (wtController.isLoadingAll.value) {
-                return const Center(child: CircularProgressIndicator());
+                return loadingData();
               }
               if (wtController.wtAllData.value!.data!.reports!.isEmpty) {
-                return const Center(child: Text('No data found'));
+                return noData();
               }
               return ListView.builder(
                 shrinkWrap: true,

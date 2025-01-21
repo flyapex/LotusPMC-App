@@ -20,10 +20,10 @@ class WTOpenRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (wtController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
         if (wtController.wtOpenData.value!.data!.reports!.isEmpty) {
-          return const Center(child: Text('No data found'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,

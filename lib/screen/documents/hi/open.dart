@@ -21,10 +21,10 @@ class HIOpenRequestScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (hiController.isLoadingOpen.value) {
-          return const Center(child: CircularProgressIndicator());
+          return loadingData();
         }
         if (hiController.hiOpenData.value!.data!.piInfos!.isEmpty) {
-          return const Center(child: Text('No open projects'));
+          return noData();
         }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -88,7 +88,7 @@ class HIOpenRequestScreen extends StatelessWidget {
                                   Stack(
                                     alignment: Alignment.center,
                                     children: [
-                                      const CircularProgressIndicator(),
+                                      loadingData(),
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -193,7 +193,7 @@ class HIOpenRequestScreen extends StatelessWidget {
                                         ],
                                       ),
                                       if (hiController.isLoadingDeny.value)
-                                        const CircularProgressIndicator(),
+                                        loadingData()
                                     ],
                                   ),
                                 );

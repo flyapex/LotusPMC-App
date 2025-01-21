@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/controller/property_controller.dart';
+import 'package:lotuspmc/service/common.dart';
 import 'package:lotuspmc/service/style/color.dart';
 import 'widget/appbar.dart';
 import 'widget/cart.dart';
@@ -22,11 +23,11 @@ class PropertyInformationScreen extends StatelessWidget {
       body: Obx(
         () {
           if (propertyController.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
+            return loadingData();
           }
           final property = propertyController.propertyInfo.value?.data;
           if (property == null) {
-            return const Center(child: Text('No data found'));
+            return noData();
           }
           return SingleChildScrollView(
             child: Column(
@@ -147,31 +148,23 @@ class PropertyInformationScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 // Floorplans
                 GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: List.generate(
-                      property.floors!.length,
-                      (index) {
-                        final floor = property.floors![index];
-                        return InkWell(
-                          onTap: () {
-                            Get.to(
-                              FullImageView(
-                                title: floor.floorName ?? 'N/A',
-                                imagerUrl: floor.floorImage ?? 'N/A',
-                              ),
-                            );
-                          },
-                          child: CartContainer(
-                            label: floor.floorName ?? 'N/A',
-                            image: floor.floorImage ?? 'N/A',
-                          ),
-                        );
-                      },
-                    )),
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  shrinkWrap: true,
+                  childAspectRatio: 0.9,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: List.generate(
+                    property.floors!.length,
+                    (index) {
+                      final floor = property.floors![index];
+                      return CartContainer(
+                        label: floor.floorName ?? 'N/A',
+                        image: floor.floorImage ?? 'N/A',
+                      );
+                    },
+                  ),
+                ),
                 const SizedBox(height: 25),
                 ElevatedButton(
                   onPressed: () {},

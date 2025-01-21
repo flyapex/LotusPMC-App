@@ -11,6 +11,7 @@ class CartContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double borderRadiusValue = 6;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,6 +29,10 @@ class CartContainer extends StatelessWidget {
           },
           child: Card(
             elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(borderRadiusValue), // Rounded border
+            ),
             child: Stack(
               children: [
                 image.isEmpty
@@ -43,18 +48,21 @@ class CartContainer extends StatelessWidget {
                           ),
                         ),
                       )
-                    : SizedBox(
-                        height: 140,
-                        width: double.infinity,
-                        child: Image.network(
-                          "$baseImageUrl$image",
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Center(
-                            child: Icon(
-                              Icons.broken_image,
-                              color: Colors.grey,
-                              size: 40,
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(borderRadiusValue),
+                        child: SizedBox(
+                          height: 140,
+                          width: double.infinity,
+                          child: Image.network(
+                            "$baseImageUrl$image",
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                color: Colors.grey,
+                                size: 40,
+                              ),
                             ),
                           ),
                         ),
