@@ -42,9 +42,10 @@ class ApiServiceLogin {
   static Future<ResponseModel?> manualRegisterApi(
     SingUpModel data,
   ) async {
+    print(data.toJson());
     try {
       final response = await dio.post(
-        '$baseUrl/register',
+        '$baseUrl/contact-submit',
         data: singUpModelToJson(data),
       );
       print(response.data);

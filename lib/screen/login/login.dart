@@ -189,12 +189,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an account? ',
+                        'Let’s ',
                         style: TextStyle(color: secondary),
                       ),
                       Text(
-                        'Sign Up',
-                        style: TextStyle(color: primary),
+                        'Connect.',
+                        style: TextStyle(color: primary, fontSize: 16),
                       ),
                     ],
                   ),

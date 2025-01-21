@@ -5,21 +5,11 @@ import 'package:lotuspmc/model/auth/auth_model.dart';
 import 'package:lotuspmc/model/auth/singup.dart';
 import 'package:lotuspmc/model/common.dart';
 import 'package:lotuspmc/service/common.dart';
+import 'package:pick_country_picker/pick_country_picker.dart';
 
 class UserController extends GetxController {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController address1Controller = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
-  TextEditingController zipCodeController = TextEditingController();
-  TextEditingController sizeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController messageController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   Future<LoginResponseModel?> manualLogin() async {
     try {
@@ -59,7 +49,19 @@ class UserController extends GetxController {
     selectedLengthOfTerm.value = duration;
   }
 
-  Future<ResponseModel?> manualRegister() async {
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController address1Controller = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController zipCodeController = TextEditingController();
+  TextEditingController sizeController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+  Country? selectedCountry;
+
+  void manualRegister() async {
     try {
       ResponseModel? response = await ApiServiceLogin.manualRegisterApi(
         SingUpModel(
@@ -74,15 +76,15 @@ class UserController extends GetxController {
           zipCode: zipCodeController.text,
           sizeOfHome: sizeController.text,
           message: messageController.text,
+          lengthOfTerm: selectedLengthOfTerm.value,
+          country: selectedCountry?.countryName,
         ),
       );
       print(response);
       if (response != null) {
-        showSnackbar(
-          'Success',
-          response.message.toString(),
-        );
-        return response;
+        showSnackbar("Success", response.message);
+        await Future.delayed(const Duration(seconds: 2));
+        Get.back(closeOverlays: true);
       } else {
         showSnackbar(
           'Error',

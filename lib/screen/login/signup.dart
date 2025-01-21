@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lotuspmc/controller/db_controller.dart';
 import 'package:lotuspmc/controller/user_controller.dart';
-import 'package:lotuspmc/model/common.dart';
 import 'package:pick_country_picker/pick_country_picker.dart';
 import '../../service/style/color.dart';
 
@@ -16,15 +14,6 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final UserController userController = Get.find();
-  DBController dbController = Get.find();
-
-  Country? selectedCountry;
-  List<Country> filteredCountries = [];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _showCountryPicker() {
     showModalBottomSheet(
@@ -36,12 +25,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           hideCloseIcon: true,
           hideSearch: false,
           backButton: Container(),
-          selectedCountryIsoCode: selectedCountry?.iso2Code,
+          selectedCountryIsoCode: userController.selectedCountry?.iso2Code,
           // excludedCountryCodes: excludedCountryCodes,
           title: 'Select a country',
           priorityCountryCodes: const ['US', 'CA', 'GB', 'LV'],
           onCountryChanged: (Country country) {
-            setState(() => selectedCountry = country);
+            _isCountryValid = true;
+            setState(() => userController.selectedCountry = country);
             Navigator.of(context).pop();
           },
           countryDisplayBuilder: (Country country) {
@@ -71,13 +61,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  String? _validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your name';
-    }
-    return null;
-  }
-
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your email';
@@ -89,10 +72,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return null;
   }
 
+  bool _isLengthOfTermValid = true;
+
+  void _validateLengthOfTerm() {
+    setState(() {
+      _isLengthOfTermValid =
+          userController.selectedLengthOfTerm.value.isNotEmpty;
+    });
+  }
+
+  bool _isCountryValid = true;
+  void _validateCountry() {
+    setState(() {
+      _isCountryValid = userController.selectedCountry != null;
+    });
+  }
+
   Widget buildTextField({
     required String label,
     required TextEditingController controller,
-    required String? Function(String?) validator,
+    String? Function(String?)? validator,
     bool obscureText = false,
     Widget? suffixIcon,
     TextInputType keyboardType = TextInputType.text,
@@ -111,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         suffixIcon: suffixIcon,
       ),
-      validator: validator,
+      validator: validator, // Defaults to null if not provided
       maxLines: maxLines,
     ).paddingSymmetric(vertical: 10);
   }
@@ -175,14 +174,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 buildTextField(
                   label: 'YOUR FIRST NAME',
                   controller: userController.firstNameController,
-                  validator: _validateName,
                   keyboardType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your first name';
+                    }
+                    return null;
+                  },
                 ),
                 buildTextField(
                   label: 'YOUR LAST NAME',
                   controller: userController.lastNameController,
-                  validator: _validateName,
                   keyboardType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your last name';
+                    }
+                    return null;
+                  },
                 ),
                 buildTextField(
                   label: 'EMAIL *',
@@ -192,8 +201,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 buildTextField(
                   label: 'Phone',
-                  controller: userController.emailController,
-                  validator: _validateEmail,
+                  controller: userController.phoneController,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const Text(
@@ -207,26 +215,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ElevatedButton(
                   onPressed: _showCountryPicker,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primary,
+                    backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
+                      side: BorderSide(
+                        color: _isCountryValid ? primary : Colors.red,
+                      ),
                     ),
                     minimumSize: Size(screenWidth, 50),
                   ),
-                  child: selectedCountry == null
-                      ? const Text(
+                  child: userController.selectedCountry == null
+                      ? Text(
                           'Select a Country',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: TextStyle(
+                            color: _isCountryValid ? secondary : Colors.red,
+                            fontSize: 16,
+                          ),
                         )
                       : Row(
                           children: [
                             Text(
-                              selectedCountry!.countryName,
-                              style: const TextStyle(color: Colors.white),
+                              userController.selectedCountry!.countryName,
+                              style: TextStyle(color: secondary),
                             ),
                             const SizedBox(width: 10),
                             Image.asset(
-                              selectedCountry!.flagUri!,
+                              userController.selectedCountry!.flagUri!,
                               package: 'pick_country_picker',
                               width: 32,
                               height: 20,
@@ -235,8 +249,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                 ),
                 const SizedBox(height: 10),
+                if (!_isCountryValid)
+                  const Text(
+                    'Please select a country',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.red,
+                    ),
+                  ).paddingSymmetric(horizontal: 10, vertical: 5),
                 buildTextField(
-                  label: 'Address Line',
+                  label: 'Address Line 1*',
                   controller: userController.addressController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -247,65 +269,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.streetAddress,
                 ),
                 buildTextField(
-                  label: 'Address Line 2 *',
+                  label: 'Address Line 2',
                   controller: userController.address1Controller,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your address';
-                    }
-                    return null;
-                  },
                   keyboardType: TextInputType.streetAddress,
                 ),
                 buildTextField(
                   label: 'CITY',
                   controller: userController.cityController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your city';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.streetAddress,
+                  keyboardType: TextInputType.text,
                 ),
                 buildTextField(
                   label: 'STATE',
                   controller: userController.stateController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                 ),
                 buildTextField(
                   label: 'ZIP CODE',
                   controller: userController.zipCodeController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.number,
                 ),
                 buildTextField(
                   label: 'SIZE OF HOME',
                   controller: userController.sizeController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                 ),
+                // Length of Term Section
                 Text(
                   'Length of Term'.toUpperCase(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
+                    color: _isLengthOfTermValid ? secondary : Colors.red,
                   ),
                 ),
                 Column(
@@ -344,8 +337,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   label: 'MESSAGE *',
                   controller: userController.messageController,
                   validator: (value) {
-                    if (value != null && value.length > 200) {
-                      return 'Note cannot exceed 200 characters';
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a message';
                     }
                     return null;
                   },
@@ -355,10 +348,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async {
+                    _validateCountry();
+                    _validateLengthOfTerm();
                     if (_formKey.currentState?.validate() ?? false) {
-                      ResponseModel? response =
-                          await userController.manualRegister();
-                      if (response != null) {}
+                      userController.manualRegister();
                     }
                   },
                   style: ElevatedButton.styleFrom(
