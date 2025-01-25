@@ -12,8 +12,10 @@ class WalkThruReposts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WTController wtController = Get.find();
+
     wtController.fetchWtAll();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nWALK-THRU REPORTS",
         backgroundColor: highlightColor,
@@ -51,9 +53,14 @@ class WalkThruReposts extends StatelessWidget {
                     ),
                     onTap: () {
                       print('Selected: ${dates[index]}');
-                      wtController.fetchPDF(
-                        dates[index].id,
-                      );
+                      if (dates[index].id != null) {
+                        wtController.fetchPDF(
+                          dates[index].id!,
+                        );
+                      } else {
+                        // Handle the case where id is null
+                        print('Error: Report ID is null');
+                      }
                     },
                   );
                 },

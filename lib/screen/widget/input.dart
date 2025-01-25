@@ -5,6 +5,7 @@ import 'package:lotuspmc/service/style/color.dart';
 class BigInputBox extends StatefulWidget {
   final TextEditingController controller;
   final String title;
+  final String hint;
   final Function() onSubmit;
 
   const BigInputBox({
@@ -12,6 +13,7 @@ class BigInputBox extends StatefulWidget {
     required this.controller,
     required this.onSubmit,
     this.title = 'SUBMIT',
+    this.hint = 'Please enter additional details here.',
   });
 
   @override
@@ -27,7 +29,7 @@ class _BigInputBoxState extends State<BigInputBox> {
           controller: widget.controller,
           maxLines: 7,
           decoration: InputDecoration(
-            labelText: 'Please enter additional details here.',
+            labelText: widget.hint,
             labelStyle: TextStyle(
               color: secondary.withOpacity(0.5),
             ),

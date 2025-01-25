@@ -14,6 +14,7 @@ class HiCompleteProjectScreen extends StatelessWidget {
     hiController.fetchHICompleteProject();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nCOMPLETED ITEMS",
         backgroundColor: highlightColor,

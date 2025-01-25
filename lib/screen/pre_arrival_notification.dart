@@ -21,8 +21,9 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: MyappBar(
-          title: "\nDOCUMENTS",
+          title: "\nPRE-ARRIVAL NOTIFICATION",
           backgroundColor: mutedText,
         ),
         body: SingleChildScrollView(
@@ -78,6 +79,19 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                   )
                 ],
               ),
+              SizedBox(
+                height: 70,
+                child: TextFormField(
+                  controller: panController.additonalNotesController,
+                  decoration: const InputDecoration(
+                    labelText: 'Additional Information',
+                    border: OutlineInputBorder(),
+                  ),
+                  expands: true,
+                  maxLines: null,
+                  minLines: null,
+                ).paddingSymmetric(vertical: 8),
+              ),
               Row(
                 children: [
                   Flexible(
@@ -97,6 +111,19 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                       subtitle: '°F',
                       hint: '0',
                       controller: panController.poolTemperatureController,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: SingleInput(
+                      title: 'HOT TUB TEMPERATURE',
+                      subtitle: '°F',
+                      hint: '72',
+                      controller: panController.hotTubTemperatureController,
                     ),
                   ),
                 ],
@@ -185,7 +212,7 @@ class _PreArrivalNotificationState extends State<PreArrivalNotification> {
                 ],
               ),
               PreArrivalWithInput(
-                title: 'SPECIAL REQUESTS',
+                title: 'Additional Pre-arrival Requests',
                 subtitle: 'Add any special requests:',
                 controllers: panController.specialRequestsController,
               ),

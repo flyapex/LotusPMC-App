@@ -14,6 +14,7 @@ class WTOpenRequestScreen extends StatelessWidget {
     wtController.fetchWtOpen();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nOPEN ITEMS",
         backgroundColor: highlightColor,

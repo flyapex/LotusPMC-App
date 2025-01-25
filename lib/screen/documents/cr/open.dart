@@ -14,6 +14,7 @@ class CROpenRequestScreen extends StatelessWidget {
     crController.fetchCROpen();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nOPEN ITEMS",
         backgroundColor: highlightColor,

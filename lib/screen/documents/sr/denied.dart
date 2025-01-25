@@ -14,6 +14,7 @@ class SRDeniedRequestScreen extends StatelessWidget {
     srController.fetchSRDenied();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nDENIED ITEMS",
         backgroundColor: highlightColor,

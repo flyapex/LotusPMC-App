@@ -17,6 +17,7 @@ class DepartureNofiticationScreen extends StatelessWidget {
     final DepController depController = Get.find();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nDEPARTURE NOTIFICATION",
         backgroundColor: borderColor,

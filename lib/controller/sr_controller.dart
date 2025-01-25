@@ -1,10 +1,11 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lotuspmc/api/api_sr.dart';
 import 'package:lotuspmc/api/common.dart';
 import 'package:lotuspmc/model/sr/sr_open.dart';
 import 'package:lotuspmc/model/sr/sr_room.dart';
 import 'package:lotuspmc/model/sr/sr_send.dart';
+import 'package:lotuspmc/screen/home.dart';
 import 'package:lotuspmc/service/common.dart';
 
 class SRController extends GetxController {
@@ -26,12 +27,7 @@ class SRController extends GetxController {
         srType: requestType.value,
         details: additionalDetailsController.text,
         userId: userID,
-        propertyGrounds: propertyGroundsController.text,
-        residenceExterior: residenceExteriorController.text,
-        residenceInterior: residenceInteriorController.text,
         roomDesignation: roomDesignation,
-        housekeeping: housekeepingController.text,
-        stormPreparedness: stormPreparednessController.text,
       );
 
       final response = await ApiServiceSR.srSendApi(data);
@@ -39,7 +35,75 @@ class SRController extends GetxController {
       if (response != null) {
         showSnackbar("Success", response.message);
         await Future.delayed(const Duration(seconds: 2));
-        Get.back(closeOverlays: true);
+        // Get.back(closeOverlays: true);
+        Get.dialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: Material(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Thank you for your request. Your CM will contact you if we have further questions. Otherwise, we are on it.",
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: const Color(0xFFFFFFFF),
+                                backgroundColor: Colors.amber,
+                                minimumSize: const Size(0, 45),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: const Text(
+                                'New Service Request',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: const Color(0xFFFFFFFF),
+                                backgroundColor: Colors.amber,
+                                minimumSize: const Size(0, 45),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                Get.to(() => const HomeScreen());
+                              },
+                              child: const Text(
+                                "I'm Finished",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ).paddingAll(20),
+              ).paddingSymmetric(horizontal: 40),
+            ],
+          ),
+        );
       } else {
         showSnackbar("Error", "Failed to send concierge request.");
       }

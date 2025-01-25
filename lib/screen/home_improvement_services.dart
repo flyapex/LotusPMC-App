@@ -42,6 +42,7 @@ class _HomeImprovementServicesScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nHOME IMPROVEMENT SERVICES",
         backgroundColor: successColor,

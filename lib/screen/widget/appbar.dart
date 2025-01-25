@@ -25,13 +25,16 @@ class MyappBar extends StatelessWidget implements PreferredSizeWidget {
             height: 50,
           ),
           const SizedBox(width: 20),
-          Text(
-            '${Get.find<DBController>().getUserName()!.toUpperCase()} $title',
-            style: GoogleFonts.urbanist(
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
-              height: 1.3,
-              color: secondary,
+          Flexible(
+            child: Text(
+              '${Get.find<DBController>().getUserName()!.toUpperCase()} $title',
+              style: GoogleFonts.urbanist(
+                fontWeight: FontWeight.w900,
+                fontSize: 16,
+                height: 1.3,
+                color: secondary,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

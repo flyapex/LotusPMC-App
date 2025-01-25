@@ -86,18 +86,22 @@ class WTController extends GetxController {
 
   var isLoadingPdf = false.obs;
 
-  void fetchPDF(reportId) async {
+  void fetchPDF(int reportID) async {
     try {
       isLoadingPdf.value = true;
 
-      final filePath = await ApiServiceWT.wtGetPdfApi(reportId);
+      final filePath = await ApiServiceWT.wtGetExcelApi(
+        reportID,
+      );
+
       if (filePath != null) {
+        print('File downloaded at: $filePath');
         final result = await OpenFile.open(filePath);
         if (result.type != ResultType.done) {
-          showSnackbar("Error", "Failed to open the PDF file.");
+          showSnackbar("Error", "Failed to open the Excel file.");
         }
       } else {
-        showSnackbar("Error", "Failed to fetch property information.");
+        showSnackbar("Error", "Failed to fetch the Excel file.");
       }
     } catch (e) {
       showSnackbar("Error", "An error occurred: $e");

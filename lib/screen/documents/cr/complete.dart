@@ -14,6 +14,7 @@ class CRCompletedRequestScreen extends StatelessWidget {
     crController.fetchCRCompleted();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nCOMPLETED ITEMS",
         backgroundColor: highlightColor,

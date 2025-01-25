@@ -14,6 +14,7 @@ class WTCompletedRequestScreen extends StatelessWidget {
     wtController.fetchWTCompleted();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nCOMPLETED ITEMS",
         backgroundColor: highlightColor,

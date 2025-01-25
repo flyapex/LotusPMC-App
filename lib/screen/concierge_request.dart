@@ -34,6 +34,7 @@ class _ConciergeRequestScreenState extends State<ConciergeRequestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nCONCIERGE REQUEST",
         backgroundColor: infoColor,

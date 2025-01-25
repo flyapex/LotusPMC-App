@@ -8,7 +8,7 @@ import 'package:lotuspmc/controller/property_controller.dart';
 import 'package:lotuspmc/controller/sr_controller.dart';
 import 'package:lotuspmc/controller/user_controller.dart';
 import 'package:lotuspmc/controller/wt_controller.dart';
-import 'package:lotuspmc/screen/login/signup.dart';
+import 'package:lotuspmc/screen/contact.dart';
 import 'package:lotuspmc/screen/property_info.dart';
 import 'package:lotuspmc/screen/service_request.dart';
 import 'package:lotuspmc/service/style/color.dart';
@@ -45,6 +45,7 @@ class HomeScreen extends StatelessWidget {
     // ignore: unused_local_variable
     final UserController userController = Get.put(UserController());
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,9 +66,9 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
-            const TitleWithBorder(title: 'PROPERTY MANAGEMENT'),
+            const TitleWithBorder(title: 'PROPERTY / CLIENT INFORMATION'),
             ActionButton(
-              text: 'PROPERTY INFORMATION',
+              text: 'PROPERTY / CLIENT INFORMATION',
               color: lightBackground,
               onTap: () {
                 Get.to(() => const PropertyInformationScreen());
@@ -122,7 +123,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Get.to(() => const SignUpScreen());
+                Get.to(() => const ContactUs());
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
@@ -133,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                 minimumSize: Size(Get.width, 50),
               ),
               child: Text(
-                'CONTACT US',
+                'Contact your CM'.toUpperCase(),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

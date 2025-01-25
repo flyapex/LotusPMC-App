@@ -16,7 +16,9 @@ class PanSendModel {
   String? windowBlinds;
   bool? outdoorLights;
   bool? indoorLights;
+  String? indoorLightInfo;
   String? poolTemperature;
+  String? tubTemperature;
   String? musicGenre;
   String? flowerType;
   String? flowerLocation;
@@ -26,7 +28,7 @@ class PanSendModel {
   String? transportationDetails;
   String? automobileDetails;
   String? specialRequests;
-  int? userId;
+  String? userId;
 
   PanSendModel({
     this.date,
@@ -35,7 +37,9 @@ class PanSendModel {
     this.windowBlinds,
     this.outdoorLights,
     this.indoorLights,
+    this.indoorLightInfo,
     this.poolTemperature,
+    this.tubTemperature,
     this.musicGenre,
     this.flowerType,
     this.flowerLocation,
@@ -55,7 +59,9 @@ class PanSendModel {
         windowBlinds: json["window_blinds"],
         outdoorLights: json["outdoor_lights"],
         indoorLights: json["indoor_lights"],
+        indoorLightInfo: json["indoor_light_info"],
         poolTemperature: json["pool_temperature"],
+        tubTemperature: json["tub_temperature"],
         musicGenre: json["music_genre"],
         flowerType: json["flower_type"],
         flowerLocation: json["flower_location"],
@@ -75,7 +81,9 @@ class PanSendModel {
         "window_blinds": windowBlinds,
         "outdoor_lights": outdoorLights,
         "indoor_lights": indoorLights,
+        "indoor_light_info": indoorLightInfo,
         "pool_temperature": poolTemperature,
+        "tub_temperature": tubTemperature,
         "music_genre": musicGenre,
         "flower_type": flowerType,
         "flower_location": flowerLocation,

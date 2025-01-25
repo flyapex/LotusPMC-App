@@ -14,6 +14,7 @@ class WTDeniedRequestScreen extends StatelessWidget {
     wtController.fetchWTDenied();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nDENIED ITEMS",
         backgroundColor: highlightColor,

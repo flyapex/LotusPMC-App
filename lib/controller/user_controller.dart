@@ -4,6 +4,7 @@ import 'package:lotuspmc/api/api_auth.dart';
 import 'package:lotuspmc/model/auth/auth_model.dart';
 import 'package:lotuspmc/model/auth/singup.dart';
 import 'package:lotuspmc/model/common.dart';
+import 'package:lotuspmc/model/contact%20us/pm_info.dart';
 import 'package:lotuspmc/service/common.dart';
 import 'package:pick_country_picker/pick_country_picker.dart';
 
@@ -99,6 +100,26 @@ class UserController extends GetxController {
         'An unexpected error occurred. Please try again.',
       );
       return null;
+    }
+  }
+
+  //getPMInfoApi
+  var pmData = Rxn<PminfoModel>();
+  var isLoadingPM = false.obs;
+
+  void fatchPminfo() async {
+    try {
+      isLoadingPM.value = true;
+      var response = await ApiServiceLogin.getPMInfoApi();
+      if (response != null) {
+        pmData.value = response;
+      } else {
+        showSnackbar("Error", "Failed to fetch property information.");
+      }
+    } catch (e) {
+      showSnackbar("Error", "An error occurred: $e");
+    } finally {
+      isLoadingPM.value = false;
     }
   }
 }

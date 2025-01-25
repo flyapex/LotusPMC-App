@@ -28,6 +28,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nDOCUMENTS",
         backgroundColor: highlightColor,
@@ -35,7 +36,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const TitleWithBorder(title: 'PROPERTY MANAGEMENT')
+            const TitleWithBorder(title: 'WALK-THRU REPORTS')
                 .paddingSymmetric(vertical: 10),
             ActionButton(
               text: 'WALK-THRU REPORTS',

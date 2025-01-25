@@ -13,9 +13,13 @@ class PANController extends GetxController {
 
   bool outdoorLightsController = false;
   bool indoorLightsController = false;
+  TextEditingController additonalNotesController = TextEditingController();
   TextEditingController temperatureController =
       TextEditingController(text: '0');
   TextEditingController poolTemperatureController = TextEditingController(
+    text: '0',
+  );
+  TextEditingController hotTubTemperatureController = TextEditingController(
     text: '0',
   );
   String windowBlindsController = '';
@@ -44,7 +48,9 @@ class PANController extends GetxController {
         windowBlinds: windowBlindsController,
         outdoorLights: outdoorLightsController,
         indoorLights: indoorLightsController,
+        indoorLightInfo: additonalNotesController.text,
         poolTemperature: poolTemperatureController.text,
+        tubTemperature: hotTubTemperatureController.text,
         musicGenre: musicController.text,
         flowerType: flowerTypeController.text,
         flowerLocation: flowerLocationController.text,
@@ -54,7 +60,7 @@ class PANController extends GetxController {
         transportationDetails: trnsportationController.text,
         automobileDetails: automobileController.text,
         specialRequests: specialRequestsController.text,
-        userId: int.tryParse(userID),
+        userId: userID,
       );
 
       final response = await ApiServicePAN.panSendApi(data);

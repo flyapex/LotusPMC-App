@@ -16,8 +16,9 @@ class PropertyInformationScreen extends StatelessWidget {
     propertyController.fetchPropertyInformation();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
-        title: "\nPROPERTY INFORMATION",
+        title: "\nLOTUS PROPERTY / CLIENT INFORMATION",
         backgroundColor: lightBackground,
       ),
       body: Obx(
@@ -166,26 +167,26 @@ class PropertyInformationScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 25),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: lightBackground,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      textStyle: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w100)),
-                  child: Text(
-                    'CONTACT US FOR UPDATES',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: secondary,
-                    ),
-                  ),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {},
+                //   style: ElevatedButton.styleFrom(
+                //       backgroundColor: lightBackground,
+                //       padding: const EdgeInsets.symmetric(
+                //           vertical: 12, horizontal: 20),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(5),
+                //       ),
+                //       textStyle: const TextStyle(
+                //           fontSize: 14, fontWeight: FontWeight.w100)),
+                //   child: Text(
+                //     'CONTACT US FOR UPDATES',
+                //     style: TextStyle(
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //       color: secondary,
+                //     ),
+                //   ),
+                // ),
                 // const SizedBox(height: 10),
                 // const TitleWithBorder(title: 'PROPERTY FLOORPLANS'),
                 // Text(

@@ -15,6 +15,7 @@ class HIOpenRequestScreen extends StatelessWidget {
     hiController.fetchHIOpen();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyappBar(
         title: "\nOPEN PROJECTS",
         backgroundColor: highlightColor,
